@@ -1,0 +1,15 @@
+artifact_uri: ./mlruns/1/56d45204fb45490b8fe02c57377d70ef/artifacts
+end_time: 1582399850406
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: 56d45204fb45490b8fe02c57377d70ef
+run_uuid: 56d45204fb45490b8fe02c57377d70ef
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1582399848648
+status: 3
+tags: []
+user_id: tbats

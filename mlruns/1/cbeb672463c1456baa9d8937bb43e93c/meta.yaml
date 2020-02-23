@@ -1,0 +1,15 @@
+artifact_uri: ./mlruns/1/cbeb672463c1456baa9d8937bb43e93c/artifacts
+end_time: 1582175904004
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: deleted
+name: ''
+run_id: cbeb672463c1456baa9d8937bb43e93c
+run_uuid: cbeb672463c1456baa9d8937bb43e93c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1582175903888
+status: 3
+tags: []
+user_id: tbats
