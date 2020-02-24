@@ -10,25 +10,6 @@
 # 2. Starts the MLflow server in the background with a OS command and kills the server process at the end of the script
 
 
-
-# Available Choices
-# 1. Data
-# 2. Algorithms
-# 3. Hyperparameter value grids
-# 4. Outer-Loop CV strategy
-# 5. Inner-Loop CV strategy
-# 6. Grid tuning strategy 
-
-
-
-# Experiment:
-# 4 core, 16GB RAM 
-# rf, glmnet algorithms with 100x2 hyperparameter grids
-# 100 obs, 10 features, repeats = 2, outer loop = 10 folds, inner loop = 25 resamples
-# 2535.33 sec (42.26 min)
-
-
-
 # Sections
 # 1. Set-Up
 # 2. Error

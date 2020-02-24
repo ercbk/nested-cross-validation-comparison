@@ -44,7 +44,7 @@ These include:
 1\. Hyperparameter value grids  
 2\. Outer-Loop CV strategy  
 3\. Inner-Loop CV strategy  
-4\. Tuning strategy
+4\. Grid search strategy
 
 For the performance experiemnt (question 2), I’ll be varying the repeats
 of the outer-loop cv strategy for each method. The fastest

@@ -10,25 +10,6 @@
 # 2. fits hyperparameter grid row by row
 
 
-
-# Available Choices
-# 1. Data
-# 2. Algorithms
-# 3. Hyperparameter value grids
-# 4. Outer-Loop CV strategy
-# 5. Inner-Loop CV strategy
-# 6. Grid tuning strategy 
-
-
-
-# Experiment:
-# 4 core, 16GB RAM 
-# rf, glmnet algorithms with 100x2 hyperparameter grids
-# 100 obs, 10 features, repeats = 2, outer loop = 10 folds, inner loop = 25 resamples
-# 12910.82 sec (215.17 min)
-
-
-
 # Sections
 # 1. Set-Up
 # 2. Error and 
@@ -36,7 +17,6 @@
 # 4. Hyperparameter Grids
 # 5. Functions used in the loops
 # 6. Compare algorithms
-
 
 
 
@@ -75,14 +55,12 @@ sim_data <- function(n) {
 small_dat <- sim_data(100)
 
 
-
 pacman::p_load(RPushbullet, glue, ranger, tidymodels, data.table, dtplyr, dplyr, furrr, mlflow)
 
 # make explicit the name of the exeriement to record to
 mlflow_set_experiment("ncv_duration")
 
 plan(multiprocess)
-
 
 
 ncv_dat_10 <- nested_cv(small_dat,

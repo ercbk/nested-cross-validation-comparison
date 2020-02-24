@@ -32,7 +32,7 @@ Various elements of the technique can be altered to improve performance. These i
 1. Hyperparameter value grids  
 2. Outer-Loop CV strategy  
 3. Inner-Loop CV strategy  
-4. Tuning strategy  
+4. Grid search strategy  
 
 For the performance experiemnt (question 2), I'll be varying the repeats of the outer-loop cv strategy for each method. The fastest implementation of each method will be tuned with different sizes of data ranging from 100 to 5000 observations. The mean absolute error will be calculated for each combination of repeat, data size, and method. 
 
