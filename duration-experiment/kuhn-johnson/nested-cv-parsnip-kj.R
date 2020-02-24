@@ -7,7 +7,7 @@
 
 # Notes
 # 1. *** Make sure the target column is last in dataframe ***
-# 2. fits hyperparameter grid row by row
+# 2. Using the Ranger Random Forest model function utilized through the parsnip package.
 
 
 # Sections

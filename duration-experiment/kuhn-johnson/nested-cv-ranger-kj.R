@@ -7,7 +7,7 @@
 
 # Notes
 # 1. *** Make sure the target column is last in dataframe ***
-# 2. Starts the MLflow server in the background with a OS command and kills the server process at the end of the script
+# 2. Using the Ranger Random Forest model function from the ranger package
 
 
 # Sections
