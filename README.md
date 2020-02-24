@@ -54,6 +54,6 @@ calculated for each combination of repeat, data size, and method.
 
 I’m using a 4 core, 16 GB RAM machine.
 
-Progress
+Progress (duration in seconds)
 
 ![](duration-experiment/kuhn-johnson/outputs/0223-results.png)

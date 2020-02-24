@@ -26,7 +26,7 @@ Duration experiment details:
       + 5000 observations: 10 features, numeric target variable  
       + outer loop: 5 folds  
       + inner loop: 2 folds  
-
+The dataset sizes are the same as those used in their respective scripts.
 
 Various elements of the technique can be altered to improve performance. These include:    
 1. Hyperparameter value grids  
@@ -38,7 +38,7 @@ For the performance experiemnt (question 2), I'll be varying the repeats of the 
 
 I'm using a 4 core, 16 GB RAM machine.
 
-Progress  
+Progress (duration in seconds)  
 
 ![](duration-experiment/kuhn-johnson/outputs/0223-results.png)  
 
