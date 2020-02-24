@@ -26,18 +26,8 @@ With regards to the question of speed, this analysis will be examining
 implementations of both methods from various packages which include
 {tune}, {mlr3}, {h2o}, and {sklearn}.
 
-The fastest implementation of each method will then be used to answer
-the second question for each method.
+Duration experiment details:
 
-Options available  
-1\. Hyperparameter value grids  
-2\. Outer-Loop CV strategy  
-3\. Inner-Loop CV strategy  
-4\. Tuning strategy
-
-Experiment details:
-
-  - 4 core, 16GB RAM  
   - Random Forest and Elastic Net Regression algorithms  
   - Both with 100x2 hyperparameter grids  
   - Kuhn-Johnson
@@ -48,6 +38,21 @@ Experiment details:
       - 5000 observations: 10 features, numeric target variable  
       - outer loop: 5 folds  
       - inner loop: 2 folds
+
+Various elements of the technique can be altered to improve performance.
+These include:  
+1\. Hyperparameter value grids  
+2\. Outer-Loop CV strategy  
+3\. Inner-Loop CV strategy  
+4\. Tuning strategy
+
+For the performance experiemnt (question 2), I’ll be varying the repeats
+of the outer-loop cv strategy for each method. The fastest
+implementation of each method will be tuned with different sizes of data
+ranging from 100 to 5000 observations. The mean absolute error will be
+calculated for each combination of repeat, data size, and method.
+
+I’m using a 4 core, 16 GB RAM machine.
 
 Progress
 
