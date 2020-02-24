@@ -1,5 +1,5 @@
-Nested Cross-Validation: Comparing Methods and Implementations
-==============================================================
+
+# Nested Cross-Validation: Comparing Methods and Implementations
 
 Nested cross-validation has become a recommended technique for
 situations in which the size of our dataset is insufficient to handle
@@ -11,10 +11,10 @@ few hundred rows.
 
 The primary issue with this technique is that it is computationally very
 expensive with potentially 1000s of models being trained in the process.
-This analysis seeks to answer two questions: 1. Which implementation is
-fastest? 2. How many *repeats*, given the size of the training set,
-should we expect to need to obtain an accurate out-of-sample error
-estimate?
+This analysis seeks to answer two questions:  
+1\. Which implementation is fastest?  
+2\. How many *repeats*, given the size of the training set, should we
+expect to need to obtain an accurate out-of-sample error estimate?
 
 While researching this technique, I found two *methods* of performing
 nested cross-validation — one authored by [Sabastian
@@ -30,21 +30,25 @@ The fastest implementation of each method will then be used to answer
 the second question for each method.
 
 Options available  
-1.Hyperparameter value grids  
-2.Outer-Loop CV strategy  
-3.Inner-Loop CV strategy  
-4.Tuning strategy
+1\. Hyperparameter value grids  
+2\. Outer-Loop CV strategy  
+3\. Inner-Loop CV strategy  
+4\. Tuning strategy
 
-Experiment info  
-*4 core, 16GB RAM  
-*rf, glmnet algorithms with 100x2 hyperparameter grids  
-*Kuhn-Johnson  
-+100 obs, 10 features, numeric target varible  
-+outer loop = 2 repeats 10 folds, inner loop = 25 resamples  
-*Raschka  
-+5000 obs, 10 features, numeric target variable  
-+outer loop = 5 folds, inner loop = 2 folds
+Experiment details:
 
-Progress:
+  - 4 core, 16GB RAM  
+  - Random Forest and Elastic Net Regression algorithms  
+  - Both with 100x2 hyperparameter grids  
+  - Kuhn-Johnson
+      - 100 observations 10 features, numeric target variable  
+      - outer loop: 2 repeats, 10 folds  
+      - inner loop: 25 bootstrap resamples  
+  - Raschka
+      - 5000 observations: 10 features, numeric target variable  
+      - outer loop: 5 folds  
+      - inner loop: 2 folds
+
+Progress
 
 ![](duration-experiment/kuhn-johnson/outputs/0223-results.png)
