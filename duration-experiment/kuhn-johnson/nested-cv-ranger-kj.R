@@ -237,7 +237,7 @@ toc(log = TRUE)
 ncv_times <- tic.log(format = FALSE)
 duration <- as.numeric(ncv_times[[1]]$toc - ncv_times[[1]]$tic)
 mlflow_log_metric("duration", duration)
-mlflow_set_tag("Implementation", "ranger")
+mlflow_set_tag("implementation", "ranger")
 mlflow_set_tag("method", "kj")
 mlflow_end_run()
 

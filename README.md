@@ -10,11 +10,12 @@ unbiased estimation of out-of-sample error using datasets with only a
 few hundred rows.
 
 The primary issue with this technique is that it is computationally very
-expensive with potentially 1000s of models being trained in the process.
-This analysis seeks to answer two questions:  
+expensive with potentially tens of 1000s of models being trained in the
+process. This experiment seeks to answer two questions:  
 1\. Which implementation is fastest?  
 2\. How many *repeats*, given the size of the training set, should we
-expect to need to obtain an accurate out-of-sample error estimate?
+expect to need to obtain a reasonably accurate out-of-sample error
+estimate?
 
 While researching this technique, I found two *methods* of performing
 nested cross-validation — one authored by [Sabastian
@@ -22,7 +23,7 @@ Raschka](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_e
 and the other by [Max Kuhn and Kjell
 Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).
 
-With regards to the question of speed, this analysis will be examining
+With regards to the question of speed, I’ll will be testing
 implementations of both methods from various packages which include
 {tune}, {mlr3}, {h2o}, and {sklearn}.
 
@@ -38,6 +39,9 @@ Duration experiment details:
       - 5000 observations: 10 features, numeric target variable  
       - outer loop: 5 folds  
       - inner loop: 2 folds
+
+(Size of the data sets are the same as those in the original scripts by
+the authors)
 
 Various elements of the technique can be altered to improve performance.
 These include:  
@@ -56,4 +60,22 @@ I’m using a 4 core, 16 GB RAM machine.
 
 Progress (duration in seconds)
 
-![](duration-experiment/kuhn-johnson/outputs/0223-results.png)
+![](duration-experiment/kuhn-johnson/outputs/0224-results.png)
+
+References
+
+Boulesteix, AL, and C Strobl. 2009. “Optimal Classifier Selection and
+Negative Bias in Error Rate Estimation: An Empirical Study on
+High-Dimensional Prediction.” BMC Medical Research Methodology 9 (1):
+85.
+[link](Boulesteix,%20AL,%20and%20C%20Strobl.%202009.%20“Optimal%20Classifier%20Selection%20and%20Negative%20Bias%20in%20Error%20Rate%20Estimation:%20An%20Empirical%20Study%20on%20High-Dimensional%20Prediction.”%20BMC%20Medical%20Research%20Methodology%209%20\(1\):%2085.)
+
+Sabastian Raschka, “STAT 479 Statistical Tests and Algorithm
+Comparison,” (Lecture Notes, University of Wisconsin-Madison, Fall
+2019).
+[link](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_eval4-algo/11-eval4-algo__notes.pdf)
+
+Sudhir Varma and Richard Simon. “Bias in error estimation when using
+cross-validation for model selection”. In: BMC bioinformatics 7.1
+(2006). p. 91.
+[link](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-7-91)
