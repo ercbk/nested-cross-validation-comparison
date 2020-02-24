@@ -1,5 +1,5 @@
-
-# Nested Cross-Validation: Comparing Methods and Implementations
+Nested Cross-Validation: Comparing Methods and Implementations
+==============================================================
 
 Nested cross-validation has become a recommended technique for
 situations in which the size of our dataset is insufficient to handle
@@ -29,4 +29,22 @@ implementations of both methods from various packages which include
 The fastest implementation of each method will then be used to answer
 the second question for each method.
 
-![](duration-experiment/kuhn-johnson/outputs/0222-results.png)
+Options available  
+1.Hyperparameter value grids  
+2.Outer-Loop CV strategy  
+3.Inner-Loop CV strategy  
+4.Tuning strategy
+
+Experiment info  
+*4 core, 16GB RAM  
+*rf, glmnet algorithms with 100x2 hyperparameter grids  
+*Kuhn-Johnson  
++100 obs, 10 features, numeric target varible  
++outer loop = 2 repeats 10 folds, inner loop = 25 resamples  
+*Raschka  
++5000 obs, 10 features, numeric target variable  
++outer loop = 5 folds, inner loop = 2 folds
+
+Progress:
+
+![](duration-experiment/kuhn-johnson/outputs/0223-results.png)
