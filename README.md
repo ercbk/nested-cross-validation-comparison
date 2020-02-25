@@ -6,7 +6,7 @@ situations in which the size of our dataset is insufficient to handle
 both hyperparameter tuning and algorithm comparison. Using standard
 methods such as k-fold cross-validation in such situations results in
 significant increases in optimization bias. Nested cross-validation has
-been shown to reduce the bias in out-of-sample error estimates even
+been shown to produce low bias in out-of-sample error estimates even
 using datasets with only a few hundred rows.
 
 The primary issue with this technique is that it is computationally very
