@@ -1,0 +1,10 @@
+Run ID,Name,Source Type,Source Name,User,Status,duration
+9380632a9dca4717816f26d39b428483,,LOCAL,C:\Users\tbats\Documents\R\Projects\nested-cv-comp-temp\duration-experiment\Raschka\mlflow\nested-cv-retic-raschka.R,tbats,FINISHED,1990.83
+ad7f1849211b42a6b6bb0aa10921e846,,LOCAL,C:\Users\tbats\Documents\R\Projects\nested-cv-comp-temp\duration-experiment\Raschka\mlflow\nested-cv-py-raschka2.py,tbats,FINISHED,1979.49
+180345e9ddad49d393cf0482087176c5,,LOCAL,C:\Users\tbats\Documents\R\Projects\nested-cv-comp-temp\duration-experiment\Raschka\mlflow\nested-cv-kj-raschka.R,tbats,FINISHED,317.68
+b54322c7bd1a4993a100dc6b44b78cb8,,LOCAL,C:\Users\tbats\Documents\R\Projects\nested-cv-comp-temp\duration-experiment\Raschka\mlflow\nested-cv-mlr3-raschka.R,tbats,FINISHED,307.45
+2c66543390bc4183a288602c572d3514,,LOCAL,nested-cv-tune-kj.R,tbats,FINISHED,7034.82
+1e519c7e647845f79a027f2aba6ab89e,,LOCAL,nested-cv-h2o-kj.R,tbats,FINISHED,12374.44
+56d45204fb45490b8fe02c57377d70ef,,LOCAL,nested-cv-sklearn-kj.R,tbats,FINISHED,7405.58
+f89e830aa4744acfadcdcc30dbdb7f31,,LOCAL,nested-cv-parsnip-kj.R,tbats,FINISHED,4622.9
+f4a72f4bedf94af9a4c3748247bfa189,,LOCAL,nested-cv-ranger-kj.R,tbats,FINISHED,2593.17
