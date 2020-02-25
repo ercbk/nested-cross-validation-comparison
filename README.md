@@ -60,7 +60,7 @@ I’m using a 4 core, 16 GB RAM machine.
 
 Progress (duration in seconds)
 
-![](duration-experiment/kuhn-johnson/outputs/0224-results.png)
+![](duration-experiment/outputs/0224-results.png)
 
 References
 
