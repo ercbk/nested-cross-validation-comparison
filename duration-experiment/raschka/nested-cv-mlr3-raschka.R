@@ -13,24 +13,6 @@
 # 4. The batch arg in the tuner function allows you to specify how you want to parallelize for each algorithm which is nice.
 
 
-
-# Choices
-# 1. Data
-# 2. Algorithms
-# 3. Hyperparameter value grids
-# 4. Outer-Loop CV strategy
-# 5. Inner-Loop CV strategy
-# 6. Tuning strategy 
-
-
-
-# Experiment:
-# 4 core, 16GB RAM 
-# rf, glmnet algorithms with 100x2 hyperparameter grids
-# 100 obs, 10 features, repeats = 2, outer loop = 10 folds, inner loop = 25 resamples
-#  sec ( min)
-
-
 # Sections:
 # 1. Set-Up and Data
 # 2. Functions Used in the Loops

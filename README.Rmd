@@ -45,7 +45,7 @@ Progress (duration in seconds)
 
 References  
 
-Boulesteix, AL, and C Strobl. 2009. “Optimal Classifier Selection and Negative Bias in Error Rate Estimation: An Empirical Study on High-Dimensional Prediction.” BMC Medical Research Methodology 9 (1): 85. [link](Boulesteix, AL, and C Strobl. 2009. “Optimal Classifier Selection and Negative Bias in Error Rate Estimation: An Empirical Study on High-Dimensional Prediction.” BMC Medical Research Methodology 9 (1): 85.)  
+Boulesteix, AL, and C Strobl. 2009. “Optimal Classifier Selection and Negative Bias in Error Rate Estimation: An Empirical Study on High-Dimensional Prediction.” BMC Medical Research Methodology 9 (1): 85. [link](https://www.researchgate.net/publication/40756303_Optimal_classifier_selection_and_negative_bias_in_error_rate_estimation_An_empirical_study_on_high-dimensional_prediction)  
 
 Sabastian Raschka, "STAT 479 Statistical Tests and Algorithm Comparison," (Lecture Notes, University of Wisconsin-Madison, Fall 2019). [link](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_eval4-algo/11-eval4-algo__notes.pdf)  
 

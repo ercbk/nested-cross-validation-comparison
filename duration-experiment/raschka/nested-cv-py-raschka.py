@@ -18,30 +18,6 @@
 # (6. cont.) and I'm just worried about fairly testing the speed of implentations.
 
 
-# Choices
-# 1. Data
-# 2. Algorithms
-# 3. Hyperparameter value grids
-# 4. Outer-Loop CV strategy
-# 5. Inner-Loop CV strategy
-# 6. Tuning strategy 
-
-
-# Experiment:
-# 4 core, 16GB RAM 
-# rf, elastic net algorithms with 40x2 and 200x2 latin hypercube grids. 
-# 5000 obs, 10 features,  outer loop = 5 folds, inner loop = 2 folds 
-# 941.49 sec (15.69 min)
-
-# Results for 5000 obs:
-# MAE: 2.07222 (Average of K-fold Cv test folds)
-# Training Error: 2.06839
-# Test Error: 2.09252
-# Best parameter for chosen algorithm, Elastic Net:
-# Alpha = 1.20342e-10
-# L1 ratio = 0.94502
-
-
 # Sections
 # 1. Set-up
 # 2. Data
@@ -59,23 +35,26 @@
 ###################################
 
 
-# Necessary in order to run in parallel.
-# Was told this must be ran before other modules imported.
-# Update executable path in sys module.
-import sys
-import os
-exe = os.path.join(sys.exec_prefix, "pythonw.exe")
-sys.executable = exe
-sys._base_executable = exe
-# update executable path in multiprocessing module
-import multiprocessing
-multiprocessing.set_executable(exe)
+# If in RStudio or using reticulate::source_python, necessary in order
+# to run in parallel.
+# Should be ran before other modules imported.
+# Updates executable path in sys module.
+# import sys
+# import os
+# exe = os.path.join(sys.exec_prefix, "pythonw.exe")
+# sys.executable = exe
+# sys._base_executable = exe
+# # update executable path in multiprocessing module
+# import multiprocessing
+# multiprocessing.set_executable(exe)
 
 
-import subprocess
-import time
-subprocess.Popen('mlflow server')
-time.sleep(10)
+# If in RStudio or using reticulate::source_python, necessary in order
+# start MLflow's server
+# import subprocess
+# import time
+# subprocess.Popen('mlflow server')
+# time.sleep(10)
 
 
 from pytictoc import TicToc
@@ -83,6 +62,7 @@ t = TicToc()
 t.tic()
 
 from pushbullet import Pushbullet
+import os
 import mlflow
 import pickle
 import numpy as np
@@ -111,15 +91,15 @@ mlflow.set_experiment("ncv_duration")
 
 # load simulated data
 # r = read mode, b = binary; pickle is binary
-with open('C:/Users/tbats/Documents/R/Projects/nested-cross-validation-comparison/data/fivek-simdat.pickle', 'rb') as fried:
+with open('./data/fivek-simdat.pickle', 'rb') as fried:
       pdat = pickle.load(fried)
 
 # load penalyzed regression hyperparameter values
-with open('C:/Users/tbats/Documents/R/Projects/nested-cross-validation-comparison/grids/elast-latin-params.pickle', 'rb') as elastp:
+with open('./grids/elast-latin-params.pickle', 'rb') as elastp:
       elast_params = pickle.load(elastp)
 
 # load random forest hyperparater values
-with open('C:/Users/tbats/Documents/R/Projects/nested-cross-validation-comparison/grids/rf-latin-params.pickle', 'rb') as rfp:
+with open('./grids/rf-latin-params.pickle', 'rb') as rfp:
       rf_params = pickle.load(rfp)
 
 

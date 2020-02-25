@@ -2,33 +2,12 @@
 
 
 # Raschka method
-# kj
+# ranger-kj
 
 
 
 # Notes
 # 1. *** Make sure the target column is last in dataframe ***
-
-
-# Available Choices
-# 1. Data
-# 2. Algorithms
-# 3. Hyperparameter value grids
-# 4. Outer-Loop CV strategy
-# 5. Inner-Loop CV strategy
-# 6. Tuning strategy 
-
-
-
-# Experiment
-# 4 core, 16GB RAM 
-# rf, elastic net algorithms with 40x2 and 200x2 latin hypercube grids respectively
-# 5000 obs, 10 features, outer-loop = 5 k-fold, inner-loop = 2 k-fold
-# 268.96 sec (4.48 min)
-# MAE: k-fold error = 1.40926 
-# test error = 1.3475
-# Best parameters for ranger:
-# mtry = 4 and trees = 234
 
 
 # Sections

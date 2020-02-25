@@ -12,30 +12,6 @@
 # 4. With n_iter set to the number of rows in the grids, RandomizedGridSearch just reshuffles the grids. Shouldn't be done this way in real life with Latin Hypercubes because I'd think shuffling defeats the purpose of grid algorithm. Sklearn doesn't execute ParameterGrid in parallel though, and I'm just worried about fairly testing the speed of implentations.
 
 
-# Choices
-# 1. Data
-# 2. Algorithms
-# 3. Hyperparameter value grids
-# 4. Outer-Loop CV strategy
-# 5. Inner-Loop CV strategy
-# 6. Tuning strategy 
-
-
-# Experiment:
-# 4 core, 16GB RAM 
-# rf, elastic net algorithms with 100x2 latin hypercube grids.
-# 5000 obs, 10 features, outer loop = 5 folds, inner loop = 2 folds
-# 928.31 sec (15.47 min)
-
-# Results for 5000 obs:
-# MAE: 2.0045 (Average of K-fold Cv test folds)
-# Training Error: 1.9942
-# Test Error: 2.043
-# Best parameter for chosen algorithm, Elastic Net:
-# Alpha = 1.20157e-10
-# L1 ratio = 0.92512
-
-
 # Sections:
 # 1. Set-Up
 # 2. Data
@@ -200,7 +176,7 @@ outer_cv <- sk_ms$KFold(n_splits = 5L,
                         random_state = 1L)
 
 # Setting n_iter to the total rows for each grid just reshuffles the grids
-n_iter_list <- list(elastic_net = 200, rf = 40)
+n_iter_list <- list(elastic_net = py_len(elast_params), rf = py_len(rf_params))
 
 lol <- list(alg_list, grid_list, n_iter_list)
 
@@ -339,3 +315,5 @@ pbPost("note", title="reticulate-raschka script finished", body=text_msg)
 tic.clearlog()
 
 
+# MLflow uses waitress for Windows. Killing it also kills mlflow.exe, python.exe, console window host processes
+installr::kill_process(process = c("waitress-serve.exe", "pythonw.exe"))

@@ -68,7 +68,7 @@ Boulesteix, AL, and C Strobl. 2009. “Optimal Classifier Selection and
 Negative Bias in Error Rate Estimation: An Empirical Study on
 High-Dimensional Prediction.” BMC Medical Research Methodology 9 (1):
 85.
-[link](Boulesteix,%20AL,%20and%20C%20Strobl.%202009.%20“Optimal%20Classifier%20Selection%20and%20Negative%20Bias%20in%20Error%20Rate%20Estimation:%20An%20Empirical%20Study%20on%20High-Dimensional%20Prediction.”%20BMC%20Medical%20Research%20Methodology%209%20\(1\):%2085.)
+[link](https://www.researchgate.net/publication/40756303_Optimal_classifier_selection_and_negative_bias_in_error_rate_estimation_An_empirical_study_on_high-dimensional_prediction)
 
 Sabastian Raschka, “STAT 479 Statistical Tests and Algorithm
 Comparison,” (Lecture Notes, University of Wisconsin-Madison, Fall
