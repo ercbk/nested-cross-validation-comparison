@@ -61,7 +61,7 @@ calculated for each combination of repeat, data size, and method.
 Notes:
 
 1.  I’m using a 4 core, 16 GB RAM machine.  
-2.  “parsnip” refers to scripts where both the Elastic Net and Ranger
+2.  “parsnip” refers to the script where both the Elastic Net and Ranger
     Random Forest model functions come from {parsnip}  
 3.  “ranger” means the Random Forest model function that’s used is
     directly from the {ranger} package.  

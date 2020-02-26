@@ -42,7 +42,7 @@ For the performance experiment (question 2), I'll be varying the repeats of the 
 Notes: 
 
 1. I'm using a 4 core, 16 GB RAM machine.  
-2. "parsnip" refers to scripts where both the Elastic Net and Ranger Random Forest model functions come from {parsnip}  
+2. "parsnip" refers to the script where both the Elastic Net and Ranger Random Forest model functions come from {parsnip}  
 3. "ranger" means the Random Forest model function that's used is directly from the {ranger} package.  
 4. In "sklearn", the Random Forest model function comes for scikit-learn.  
 5. "ranger-kj" uses all the Kuhn-Johnson loop functions and the {ranger} Random Forest model function to execute Raschka's method.  
