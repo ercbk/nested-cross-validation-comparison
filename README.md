@@ -11,11 +11,12 @@ using datasets with only a few hundred rows.
 
 The primary issue with this technique is that it is computationally very
 expensive with potentially tens of 1000s of models being trained during
-the process. This experiment seeks to answer two questions:  
-1\. Which implementation is fastest?  
-2\. How many *repeats*, given the size of the training set, should we
-expect to need to obtain a reasonably accurate out-of-sample error
-estimate?
+the process. This experiment seeks to answer two questions:
+
+1.  Which implementation is fastest?  
+2.  How many *repeats*, given the size of the training set, should we
+    expect to need to obtain a reasonably accurate out-of-sample error
+    estimate?
 
 While researching this technique, I found two *methods* of performing
 nested cross-validation — one authored by [Sabastian
@@ -44,11 +45,12 @@ Duration experiment details:
 the authors)
 
 Various elements of the technique can be altered to improve performance.
-These include:  
-1\. Hyperparameter value grids  
-2\. Outer-Loop CV strategy  
-3\. Inner-Loop CV strategy  
-4\. Grid search strategy
+These include:
+
+1.  Hyperparameter value grids  
+2.  Outer-Loop CV strategy  
+3.  Inner-Loop CV strategy  
+4.  Grid search strategy
 
 For the performance experiment (question 2), I’ll be varying the repeats
 of the outer-loop cv strategy for each method. The fastest
@@ -56,7 +58,17 @@ implementation of each method will be tuned with different sizes of data
 ranging from 100 to 5000 observations. The mean absolute error will be
 calculated for each combination of repeat, data size, and method.
 
-I’m using a 4 core, 16 GB RAM machine.
+Notes:
+
+1.  I’m using a 4 core, 16 GB RAM machine.  
+2.  “parsnip” refers to scripts where both the Elastic Net and Ranger
+    Random Forest model functions come from {parsnip}  
+3.  “ranger” means the Random Forest model function that’s used is
+    directly from the {ranger} package.  
+4.  In “sklearn”, the Random Forest model function comes for
+    scikit-learn.  
+5.  “ranger-kj” uses all the Kuhn-Johnson loop functions and the
+    {ranger} Random Forest model function to execute Raschka’s method.
 
 Progress (duration in seconds)
 

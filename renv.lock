@@ -245,6 +245,20 @@
       "Repository": "CRAN",
       "Hash": "98ca919385a634e5d558e6938755e0bf"
     },
+    "corrplot": {
+      "Package": "corrplot",
+      "Version": "0.84",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b55c32ae818a84109a51f172290c95f2"
+    },
+    "countrycode": {
+      "Package": "countrycode",
+      "Version": "1.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "947b61a2a21b5a50af567b591b845f72"
+    },
     "crayon": {
       "Package": "crayon",
       "Version": "1.3.4",
@@ -266,12 +280,26 @@
       "Repository": "CRAN",
       "Hash": "2b7d10581cc730804e9ed178c8374bd6"
     },
+    "d3r": {
+      "Package": "d3r",
+      "Version": "0.8.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4c1677c45eb1dff74f3863e773a8b26a"
+    },
     "data.table": {
       "Package": "data.table",
       "Version": "1.12.8",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "cd711af60c47207a776213a368626369"
+    },
+    "data.tree": {
+      "Package": "data.tree",
+      "Version": "0.7.11",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9087f2826e50c659ba54ade20d4c8676"
     },
     "desc": {
       "Package": "desc",
@@ -328,6 +356,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "716869fffc16e282c118f8894e082a7d"
+    },
+    "echarts4r": {
+      "Package": "echarts4r",
+      "Version": "0.2.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2604014e6b28deb9dc2be4062c96a58a"
     },
     "ellipsis": {
       "Package": "ellipsis",

@@ -2,11 +2,12 @@
 output: github_document
 ---
 
-# Nested Cross-Validation: Comparing Methods and Implementations
+# Nested Cross-Validation: Comparing Methods and Implementations  
 
 Nested cross-validation has become a recommended technique for situations in which the size of our dataset is insufficient to handle both hyperparameter tuning and algorithm comparison. Using standard methods such as k-fold cross-validation in such situations results in  significant increases in optimization bias. Nested cross-validation has been shown to produce low bias in out-of-sample error estimates even using datasets with only a few hundred rows.  
 
-The primary issue with this technique is that it is computationally very expensive with potentially tens of 1000s of models being trained during the process. This experiment seeks to answer two questions:    
+The primary issue with this technique is that it is computationally very expensive with potentially tens of 1000s of models being trained during the process. This experiment seeks to answer two questions:  
+
 1. Which implementation is fastest?  
 2. How many *repeats*, given the size of the training set, should we expect to need to obtain a reasonably accurate out-of-sample error estimate?  
 
@@ -29,7 +30,8 @@ Duration experiment details:
 
 (Size of the data sets are the same as those in the original scripts by the authors)
 
-Various elements of the technique can be altered to improve performance. These include:    
+Various elements of the technique can be altered to improve performance. These include:  
+
 1. Hyperparameter value grids  
 2. Outer-Loop CV strategy  
 3. Inner-Loop CV strategy  
@@ -37,11 +39,48 @@ Various elements of the technique can be altered to improve performance. These i
 
 For the performance experiment (question 2), I'll be varying the repeats of the outer-loop cv strategy for each method. The fastest implementation of each method will be tuned with different sizes of data ranging from 100 to 5000 observations. The mean absolute error will be calculated for each combination of repeat, data size, and method. 
 
-I'm using a 4 core, 16 GB RAM machine.
+Notes: 
+
+1. I'm using a 4 core, 16 GB RAM machine.  
+2. "parsnip" refers to scripts where both the Elastic Net and Ranger Random Forest model functions come from {parsnip}  
+3. "ranger" means the Random Forest model function that's used is directly from the {ranger} package.  
+4. In "sklearn", the Random Forest model function comes for scikit-learn.  
+5. "ranger-kj" uses all the Kuhn-Johnson loop functions and the {ranger} Random Forest model function to execute Raschka's method.  
+  
+
 
 Progress (duration in seconds)  
 
 ![](duration-experiment/outputs/0225-results.png)  
+
+
+```{r, echo=FALSE, eval=FALSE, message=FALSE}
+library(dplyr, quietly = TRUE)
+library(echarts4r, quietly = TRUE)
+
+runs <- readr::read_rds("data/duration-runs.rds")
+
+e_common(
+      font_family = "Roboto Medium",
+      theme = NULL
+)
+
+runs %>% 
+      group_by(method) %>% 
+      arrange(duration)  %>% 
+      mutate(duration = round(duration/60, 2)) %>% 
+      e_charts(implementation) %>% 
+      e_bar(duration) %>% 
+      e_flip_coords() %>% 
+      e_tooltip() %>%
+      e_legend() %>% 
+      e_title("Duration", "minutes") %>% 
+      e_theme_custom('{"color":["#195198","#BD9865"], "backgroundColor": "ivory"}')
+
+
+```
+
+
 
 References  
 
