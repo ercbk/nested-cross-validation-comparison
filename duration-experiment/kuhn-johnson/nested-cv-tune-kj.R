@@ -157,6 +157,7 @@ params_list <- list(glm = glm_params, rf = rf_params)
 ################################
 
 
+# inputs params, model, and resample, calls model and error functions, outputs error
 mod_error <- function(params, mod_FUN, dat) {
    y_col <- ncol(dat$data)
    y_obs <- assessment(dat)[y_col]

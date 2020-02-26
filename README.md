@@ -50,7 +50,7 @@ These include:
 3\. Inner-Loop CV strategy  
 4\. Grid search strategy
 
-For the performance experiemnt (question 2), I’ll be varying the repeats
+For the performance experiment (question 2), I’ll be varying the repeats
 of the outer-loop cv strategy for each method. The fastest
 implementation of each method will be tuned with different sizes of data
 ranging from 100 to 5000 observations. The mean absolute error will be
@@ -60,7 +60,7 @@ I’m using a 4 core, 16 GB RAM machine.
 
 Progress (duration in seconds)
 
-![](duration-experiment/outputs/0224-results.png)
+![](duration-experiment/outputs/0225-results.png)
 
 References
 

@@ -30,6 +30,7 @@
 ######################################
 
 
+# text me if any errors occur
 options(error = function() { 
    library(RPushbullet)
    pbPost("note", "Error", geterrmessage())
@@ -113,7 +114,7 @@ y_test <- as.numeric(dat_splits[[4]])
 # Estimators
 ######################################
 
-# Penalyzed Regression
+# Elastic Net Regression
 elast_est <- sk_lm$ElasticNet(normalize = TRUE,
                          fit_intercept = TRUE)
 
@@ -132,7 +133,7 @@ alg_list <- list(elastic_net = elast_est, rf = rf_est)
 ######################################
 
 
-# Penalyzed Regression
+# Elastic Net Regression
 elast_params <- r_to_py(dials::grid_latin_hypercube(
    dials::mixture(),
    dials::penalty(),
@@ -311,6 +312,8 @@ log.txt <- tic.log(format = TRUE)
 text_msg <- glue("{log.txt[[1]]} for script to complete
                  Results:
                  {msg}")
+
+# text me the results
 pbPost("note", title="reticulate-raschka script finished", body=text_msg)
 tic.clearlog()
 

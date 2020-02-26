@@ -74,12 +74,13 @@ from sklearn.metrics import mean_absolute_error
 
 np.random.seed(2019)
 
+# dotenv allows for persistent environment variables
 from dotenv import load_dotenv
 load_dotenv()
 pb_token = os.getenv('PUSHBULLET_TOKEN')
 pb = Pushbullet(pb_token)
 
-
+# make explicit the name of the exeriement to record to
 mlflow.set_experiment("ncv_duration")
 
 
@@ -94,7 +95,7 @@ mlflow.set_experiment("ncv_duration")
 with open('./data/fivek-simdat.pickle', 'rb') as fried:
       pdat = pickle.load(fried)
 
-# load penalyzed regression hyperparameter values
+# load elastic net regression hyperparameter values
 with open('./grids/elast-latin-params.pickle', 'rb') as elastp:
       elast_params = pickle.load(elastp)
 
@@ -159,6 +160,7 @@ grid_dict = {'Elastic Net': elast_grid, 'Random Forest': rf_grid}
 ####################################
 
 
+# vessel for my inner-loop grid search objects
 gridcvs = {}
 
 # shuffle = True required for setting random state
@@ -166,9 +168,7 @@ gridcvs = {}
 inner_cv = KFold(n_splits = 2, shuffle = True, random_state = 1)
 
 # Setting this parameter to the size of the grid tells Random Search to use every grid value once
-elast_iter = len(elast_params)
-rf_iter = len(rf_params)
-iter_dict = {'Elastic Net': elast_iter, 'Random Forest': rf_iter}
+iter_dict = {'Elastic Net': len(elast_params), 'Random Forest': len(rf_params)}
 
 
 # Setting up multiple RandomSearchCV objects, 1 for each algorithm
@@ -194,7 +194,7 @@ for pgrid, est, n_iter, name in zip((elast_grid, rf_grid),
 # Run nested-cv
 ####################################
 
-
+# vessel for stats on the outer fold results
 results = pd.DataFrame()
 
 # The validation set scores of the outer loop folds will be used to choose the best algorithm
@@ -278,5 +278,6 @@ msg = f'Python script finished in {time_elapsed} seconds. The chosen algorithm w
 pb.push_note("Nested CV script finished", msg)
 
 
+# only necessary if running in RStudio or using reticulate::source_python
 # MLflow uses waitress for Windows. Killing it also kills mlflow.exe, python.exe, console window host processes
-os.system('taskkill /f /im waitress-serve.exe')
+# os.system('taskkill /f /im waitress-serve.exe')

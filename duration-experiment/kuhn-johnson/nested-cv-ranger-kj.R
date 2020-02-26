@@ -102,7 +102,7 @@ ranger_FUN <- function(params, analysis_set) {
 }
 
 
-# Regularized Regression
+# Elastic Net Regression
 
 glm_FUN <- function(params, analysis_set) {
    alpha <- params$mixture[[1]]

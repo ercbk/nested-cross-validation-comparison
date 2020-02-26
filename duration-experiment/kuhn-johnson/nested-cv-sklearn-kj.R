@@ -92,6 +92,8 @@ error_FUN <- function(y_obs, y_hat){
 #####################################
 
 
+# Random Forest
+
 sklearn_rf_FUN <- function(params, analysis_set) {
    sklearn_e <- import("sklearn.ensemble")
    max_features <- r_to_py(params$mtry[[1]])
@@ -112,7 +114,7 @@ sklearn_rf_FUN <- function(params, analysis_set) {
 }
 
 
-# Regularized Regression
+# Elastic Net Regression
 
 glm_FUN <- function(params, analysis_set) {
       alpha <- params$mixture[[1]]

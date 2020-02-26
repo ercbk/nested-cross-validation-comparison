@@ -70,7 +70,7 @@ ncv_dat_10 <- rsample::nested_cv(small_dat,
                               inside = bootstraps(times = 25))
 
 
-
+# Start h2o cluster
 h2o.init()
 
 
@@ -86,6 +86,7 @@ error_FUN <- function(model){
 }
 
 
+# Distributed Random Forest
 
 rf_FUN <- function(x, y, anal_h2o, ass_h2o, params) {
    
@@ -93,7 +94,7 @@ rf_FUN <- function(x, y, anal_h2o, ass_h2o, params) {
    ntrees <- params$ntrees[[1]]
    
    # h20 ususally needs unique ids or loops will return exact same values over and over
-   modelId <- as.character(Sys.time())
+   gridId <- as.character(dqrng::dqrnorm(1))
    
    h2o.show_progress()
    
@@ -106,6 +107,8 @@ rf_FUN <- function(x, y, anal_h2o, ass_h2o, params) {
                     ntrees = ntrees)
 }
 
+
+# Elastic Net Regression
 
 glm_FUN <- function(x, y, anal_h2o, ass_h2o, params) {
    
@@ -154,6 +157,7 @@ params_list <- list(glm = list(alpha = c(0, 0.25, 0.5, 0.75, 1),
 #####################################################
 
 
+# inputs params, model, and resample, calls model and error functions, outputs error
 mod_error <- function(params, mod_FUN, dat) {
    anal_df <- rsample::analysis(dat)
    ass_df <- rsample::assessment(dat)
@@ -297,4 +301,5 @@ tic.clearlog()
 # MLflow uses waitress for Windows. Killing it also kills mlflow.exe, python.exe, console window host processes
 installr::kill_process(process = c("waitress-serve.exe"))
 
-
+# shutdown cluster
+h2o.shutdown(prompt = FALSE)
