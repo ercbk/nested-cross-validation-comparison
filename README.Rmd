@@ -38,14 +38,6 @@ Various elements of the technique can be altered to improve performance. These i
 4. Grid search strategy  
 
 For the performance experiment (question 2), I'll be varying the repeats of the outer-loop cv strategy for each method. The fastest implementation of each method will be tuned with different sizes of data ranging from 100 to 5000 observations. The mean absolute error will be calculated for each combination of repeat, data size, and method. 
-
-Notes: 
-
-1. I'm using a 4 core, 16 GB RAM machine.  
-2. "parsnip" refers to the script where both the Elastic Net and Ranger Random Forest model functions come from {parsnip}  
-3. "ranger" means the Random Forest model function that's used is directly from the {ranger} package.  
-4. In "sklearn", the Random Forest model function comes for scikit-learn.  
-5. "ranger-kj" uses all the Kuhn-Johnson loop functions and the {ranger} Random Forest model function to execute Raschka's method.  
   
 
 
@@ -53,29 +45,61 @@ Progress (duration in seconds)
 
 ![](duration-experiment/outputs/0225-results.png)  
 
+![](duration-experiment/outputs/duration-pkg-tbl.png)  
 
-```{r, echo=FALSE, eval=FALSE, message=FALSE}
-library(dplyr, quietly = TRUE)
-library(echarts4r, quietly = TRUE)
+```{r, echo=FALSE, message=FALSE}
+pacman::p_load(extrafont, dplyr, ggplot2, patchwork, stringr, tidytext)
 
-runs <- readr::read_rds("data/duration-runs.rds")
 
-e_common(
-      font_family = "Roboto Medium",
-      theme = NULL
-)
 
-runs %>% 
-      group_by(method) %>% 
-      arrange(duration)  %>% 
-      mutate(duration = round(duration/60, 2)) %>% 
-      e_charts(implementation) %>% 
-      e_bar(duration) %>% 
-      e_flip_coords() %>% 
-      e_tooltip() %>%
-      e_legend() %>% 
-      e_title("Duration", "minutes") %>% 
-      e_theme_custom('{"color":["#195198","#BD9865"], "backgroundColor": "ivory"}')
+runs_raw <- readr::read_rds("data/duration-runs.rds")
+
+
+
+runs <- runs_raw %>%
+      mutate(duration = round(duration/60, 2),
+             implementation = as.factor(str_to_title(implementation)),
+             implementation = reorder_within(implementation, duration, method))
+
+
+raschka <- runs %>% 
+   filter(method == "raschka") %>%
+   ggplot(aes(y = duration, x = implementation, label = duration)) + 
+   geom_bar(stat = "identity", width = 0.50, fill = "#195198") +
+   coord_flip() +
+   scale_x_reordered() +
+   geom_text(hjust = 1.3,  size = 3.5, color = "white") +
+   labs(x = NULL, y = NULL,
+        title = "Raschka") +
+   theme(plot.title = element_text(size = rel(0.9)))
+
+
+kj <- runs %>% 
+   filter(method == "kj") %>%
+   ggplot(aes(y = duration, x = implementation, label = duration)) + 
+   geom_bar(stat = "identity", width = 0.50, fill = "#BD9865") +
+   coord_flip() +
+   scale_x_reordered() +
+   geom_text(hjust = 1.3,  size = 3.5, color = "white") +
+   labs(x = NULL, y = NULL,
+        title = "Kuhn-Johnson") +
+   theme(plot.title = element_text(size = rel(0.9)))
+
+durations <- raschka + kj +
+      plot_annotation(title = "Durations",
+                      subtitle = "minutes") &
+      theme(text = element_text(family = "Roboto"),
+            axis.ticks = element_blank(),
+            panel.background = element_rect(fill = "ivory",
+                                            colour = "ivory"),
+            plot.background = element_rect(fill = "ivory"),
+            plot.subtitle = element_text(size = rel(0.85)),
+            panel.border = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank()
+      )
+durations
+
 
 
 ```

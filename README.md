@@ -58,21 +58,13 @@ implementation of each method will be tuned with different sizes of data
 ranging from 100 to 5000 observations. The mean absolute error will be
 calculated for each combination of repeat, data size, and method.
 
-Notes:
-
-1.  I’m using a 4 core, 16 GB RAM machine.  
-2.  “parsnip” refers to the script where both the Elastic Net and Ranger
-    Random Forest model functions come from {parsnip}  
-3.  “ranger” means the Random Forest model function that’s used is
-    directly from the {ranger} package.  
-4.  In “sklearn”, the Random Forest model function comes for
-    scikit-learn.  
-5.  “ranger-kj” uses all the Kuhn-Johnson loop functions and the
-    {ranger} Random Forest model function to execute Raschka’s method.
-
 Progress (duration in seconds)
 
 ![](duration-experiment/outputs/0225-results.png)
+
+![](duration-experiment/outputs/duration-pkg-tbl.png)
+
+![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 References
 
