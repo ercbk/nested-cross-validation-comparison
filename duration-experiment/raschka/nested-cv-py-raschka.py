@@ -35,7 +35,7 @@
 ###################################
 
 
-# If in RStudio or using reticulate::source_python, necessary in order
+# If running with reticulate::repl_python or using reticulate::source_python, necessary in order
 # to run in parallel.
 # Should be ran before other modules imported.
 # Updates executable path in sys module.
@@ -49,7 +49,7 @@
 # multiprocessing.set_executable(exe)
 
 
-# If in RStudio or using reticulate::source_python, necessary in order
+# If running with reticulate::repl_python or using reticulate::source_python, necessary in order
 # start MLflow's server
 # import subprocess
 # import time
@@ -278,6 +278,6 @@ msg = f'Python script finished in {time_elapsed} seconds. The chosen algorithm w
 pb.push_note("Nested CV script finished", msg)
 
 
-# only necessary if running in RStudio or using reticulate::source_python
+# only necessary if running with reticulate::repl_python or using reticulate::source_python
 # MLflow uses waitress for Windows. Killing it also kills mlflow.exe, python.exe, console window host processes
 # os.system('taskkill /f /im waitress-serve.exe')
