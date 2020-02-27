@@ -13,7 +13,7 @@ The primary issue with this technique is that it is computationally very
 expensive with potentially tens of 1000s of models being trained during
 the process. This experiment seeks to answer two questions:
 
-1.  Which implementation is fastest?  
+1.  What’s the fastest implementation of each method?  
 2.  How many *repeats*, given the size of the training set, should we
     expect to need to obtain a reasonably accurate out-of-sample error
     estimate?
@@ -52,11 +52,13 @@ These include:
 3.  Inner-Loop CV strategy  
 4.  Grid search strategy
 
-For the performance experiment (question 2), I’ll be varying the repeats
-of the outer-loop cv strategy for each method. The fastest
-implementation of each method will be tuned with different sizes of data
-ranging from 100 to 5000 observations. The mean absolute error will be
-calculated for each combination of repeat, data size, and method.
+For the performance experiment (question 2), the fastest implementation
+of each method will be used in running a nested cross-validation with
+different sizes of data ranging from 100 to 5000 observations and
+different numbers of repeats of the outer-loop cv strategy. The chosen
+algorithm and hyperparameters will predict on a 100K row simulated
+dataset and the mean absolute error will be calculated for each
+combination of repeat, data size, and method.
 
 Progress (duration in seconds)
 
