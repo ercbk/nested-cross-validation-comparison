@@ -10,7 +10,6 @@
 # 3. *** For glm models, setting parallelism = 0 causes the grid search to hang. Manually set the number of models to compute in parallel ***
 # 4. H2O doesn't have a cv strategy that just fits the grid row by row. Your options are RandomDiscrete or Cartesian Grid. I set the parameter ranges so that using the Cartesian grid would create a 100 row grid to match the other scripts.
 # 5. Uses few cpu resources when tuning glmnet, but does maximize cpu usage for tuning the rf
-# 6. Starts the MLflow server in the background with a OS command and kills the server process at the end of the script
 
 
 # Sections
@@ -238,7 +237,7 @@ compare_algs <- function(alg, params, mod_FUN, dat){
          dat[which.min(dat$mean_error),]
       }) %>%
       select(names(params)) %>% 
-      # H2O makes params into char vars and adds brackets to the values. Guessing they're python lists.
+      # H2O makes params into char vars and adds brackets to the values. Guessing they're json.
       mutate_all(~stringr::str_remove_all(., "^\\[")) %>% 
       mutate_all(~stringr::str_remove_all(., "\\]")) %>%
       mutate_all(as.numeric)
