@@ -169,7 +169,9 @@ gridcvs = {}
 inner_cv = KFold(n_splits = 2, shuffle = True, random_state = 1)
 
 # Setting this parameter to the size of the grid tells Random Search to use every grid value once
-iter_dict = {'Elastic Net': len(elast_params), 'Random Forest': len(rf_params)}
+elast_iter = len(elast_params)
+rf_iter = len(rf_params)
+iter_dict = {'Elastic Net': elast_iter, 'Random Forest': rf_iter}
 
 
 # Setting up multiple RandomSearchCV objects, 1 for each algorithm
