@@ -3,10 +3,11 @@
 
 pacman::p_load(tibble, dplyr, tidyr, gt)
 
-runs_raw <- readr::read_rds("R/Projects/nested-cross-validation-comparison/data/duration-runs.rds") %>%
+runs_raw <- readr::read_rds("data/duration-runs.rds") %>%
       mutate(implementation = stringr::str_to_title(implementation))
 
 
+# hardcoded
 # packages used for the model functions ordered by implementation in the runs_raw file
 elast_net <- c("sklearn", "sklearn", "parsnip-glmnet", "mlr-glmnet", "parsnip-glmnet", "h2o", "parsnip-glmnet", "parsnip-glmnet", "parsnip-glmnet")
 rand_forest <- c("sklearn", "sklearn", "ranger", "mlr-ranger", "parsnip-ranger", "h2o", "sklearn", "parsnip-ranger", "ranger")

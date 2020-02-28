@@ -90,6 +90,7 @@ durations <- raschka + kj +
                       subtitle = "minutes") &
       theme(text = element_text(family = "Roboto"),
             axis.ticks = element_blank(),
+            axis.text.x = element_blank(),
             panel.background = element_rect(fill = "ivory",
                                             colour = "ivory"),
             plot.background = element_rect(fill = "ivory"),
@@ -99,7 +100,6 @@ durations <- raschka + kj +
             panel.grid.minor = element_blank()
       )
 durations
-
 
 
 ```

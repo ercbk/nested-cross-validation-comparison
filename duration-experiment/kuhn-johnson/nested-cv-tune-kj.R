@@ -7,7 +7,6 @@
 
 # Notes
 # 1.  *** Make sure the target column is last in dataframe ***
-# 2. Starts the MLflow server in the background with a OS command and kills the server process at the end of the script
 
 
 # Sections
@@ -25,7 +24,7 @@
 # Set-up
 ################################
 
-
+# text me if an error occurs
 options(error = function() { 
    library(RPushbullet)
    pbPost("note", "Error", geterrmessage())

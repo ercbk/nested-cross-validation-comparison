@@ -29,6 +29,7 @@
 #####################################################
 
 
+# texts me when there's an error
 options(error = function() { 
       library(RPushbullet)
       pbPost("note", "Error", geterrmessage())

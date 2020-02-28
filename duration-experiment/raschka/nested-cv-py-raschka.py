@@ -5,7 +5,7 @@
 # python
 
 
-# Notes
+#  Notes
 # 1. *** make sure target variable is the last variable in the data.frame ***
 # 2. Hyperparameter values were generated from the R package dials and saved to pickle format through reticulate
 # 3. Data was simulated by R package mlbench and saved in pickle format through reticulate
@@ -26,6 +26,7 @@
 # 5. Create inner-loop tuning strategy
 # 6. Run nested-cv
 # 7. Train and Score Chosen Algorithm
+
 
 
 

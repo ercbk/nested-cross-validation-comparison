@@ -77,6 +77,13 @@
       "Repository": "CRAN",
       "Hash": "1fdc9b3adfe2e2f8f77c22a59cf322ec"
     },
+    "ModelMetrics": {
+      "Package": "ModelMetrics",
+      "Version": "1.2.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f0d8132eac48aeead07b3a7d5056d059"
+    },
     "R6": {
       "Package": "R6",
       "Version": "2.4.1",
@@ -209,6 +216,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "f3c7c37950ae9a772b3676e4c172f978"
+    },
+    "caret": {
+      "Package": "caret",
+      "Version": "6.0-85",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "43c568c0cbbc66f2c1fe93f054b70a71"
     },
     "checkmate": {
       "Package": "checkmate",
@@ -789,6 +803,13 @@
       "Repository": "CRAN",
       "Hash": "4ef9f64ceb0aee549eeb1de7e843f04b"
     },
+    "mlr3misc": {
+      "Package": "mlr3misc",
+      "Version": "0.1.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "697dbe66a60fd599cee7f56d349dfd19"
+    },
     "munsell": {
       "Package": "munsell",
       "Version": "0.5.0",
@@ -851,6 +872,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "b37932b67288bc62bb81686b2f337a7d"
+    },
+    "paradox": {
+      "Package": "paradox",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4c72f7c6af1c4b9975f414011a680b7e"
     },
     "parsnip": {
       "Package": "parsnip",
