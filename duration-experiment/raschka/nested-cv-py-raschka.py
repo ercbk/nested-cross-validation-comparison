@@ -36,10 +36,10 @@
 ###################################
 
 
-# If running with reticulate::repl_python or using reticulate::source_python, necessary in order
-# to run in parallel.
-# Should be ran before other modules imported.
-# Updates executable path in sys module.
+# # If running with reticulate::repl_python or using reticulate::source_python, necessary in order
+# # to run in parallel.
+# # Should be ran before other modules imported.
+# # Updates executable path in sys module.
 # import sys
 # import os
 # exe = os.path.join(sys.exec_prefix, "pythonw.exe")
@@ -50,8 +50,8 @@
 # multiprocessing.set_executable(exe)
 
 
-# If running with reticulate::repl_python or using reticulate::source_python, necessary in order
-# start MLflow's server
+# # If running with reticulate::repl_python or using reticulate::source_python, necessary in order
+# # start MLflow's server
 # import subprocess
 # import time
 # subprocess.Popen('mlflow server')
@@ -281,6 +281,7 @@ msg = f'Python script finished in {time_elapsed} seconds. The chosen algorithm w
 pb.push_note("Nested CV script finished", msg)
 
 
-# only necessary if running with reticulate::repl_python or using reticulate::source_python
-# MLflow uses waitress for Windows. Killing it also kills mlflow.exe, python.exe, console window host processes
+# # only necessary if running with reticulate::repl_python or using reticulate::source_python
+# # MLflow uses waitress for Windows. Killing it also kills mlflow.exe, python.exe, console window host processes
 # os.system('taskkill /f /im waitress-serve.exe')
+# os.system('taskkill /f /im pythonw.exe')

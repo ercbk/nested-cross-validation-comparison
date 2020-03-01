@@ -93,7 +93,7 @@ rf_FUN <- function(x, y, anal_h2o, ass_h2o, params) {
    ntrees <- params$ntrees[[1]]
    
    # h20 ususally needs unique ids or loops will return exact same values over and over
-   gridId <- as.character(dqrng::dqrnorm(1))
+   modelId <- as.character(dqrng::dqrnorm(1))
    
    h2o.show_progress()
    
