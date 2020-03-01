@@ -2,12 +2,13 @@
 # Nested Cross-Validation: Comparing Methods and Implementations
 
 Nested cross-validation has become a recommended technique for
-situations in which the size of our dataset is insufficient to handle
-both hyperparameter tuning and algorithm comparison. Using standard
-methods such as k-fold cross-validation in such situations results in
-significant increases in optimization bias. Nested cross-validation has
-been shown to produce low bias in out-of-sample error estimates even
-using datasets with only a few hundred rows.
+situations in which the size of our dataset is insufficient to
+simultaneously handle hyperparameter tuning and algorithm comparison.
+Using standard methods such as k-fold cross-validation in such
+situations results in significant increases in optimization bias. Nested
+cross-validation has been shown to produce low bias, out-of-sample error
+estimates even using datasets with only a few hundred rows and therefore
+gives a better judgemnet of generalization performance.
 
 The primary issue with this technique is that it is computationally very
 expensive with potentially tens of 1000s of models being trained during
@@ -19,8 +20,8 @@ Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resam
 This experiment seeks to answer two questions:
 
 1.  What’s the fastest implementation of each method?  
-2.  How many *repeats*, given the size of the training set, should we
-    expect to need to obtain a reasonably accurate out-of-sample error
+2.  How many repeats, given the size of this dataset, should we expect
+    to need to obtain a reasonably accurate out-of-sample error
     estimate?
 
 With regards to the question of speed, I’ll will be testing
