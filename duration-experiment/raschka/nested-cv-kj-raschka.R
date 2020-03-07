@@ -295,6 +295,11 @@ if (!is.data.frame(chosen_preds)) {
 }
 test_error <- round(error_FUN(test_dat$y, chosen_preds), 5)
 
+# avg error across outer-loop folds in ncv
+outer_kfold_error <- algorithm_comparison %>% 
+   filter(model == chosen_alg) %>%
+   mutate(mean_error = round(mean_error, 5)) %>% 
+   pull(mean_error)
 
 # Create output message and text me the results
 best_hyper_vals <- best_hyper_vals %>% 
@@ -303,6 +308,7 @@ best_hyper_vals <- best_hyper_vals %>%
       glue_collapse(sep = ",", last = " and ")
 
 msg <- glue("Avg K-Fold CV error: {avg_kfold_error[[1]]}
+     Outer-Fold Avg Error: {outer_kfold_error}
      Test Error: {test_error}
      Best Parameters for {chosen_alg}:
      {best_hyper_vals}")

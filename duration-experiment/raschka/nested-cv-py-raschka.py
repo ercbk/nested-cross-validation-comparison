@@ -267,15 +267,16 @@ test_error = round(mean_absolute_error(y_true=y_test, y_pred=best_model.predict(
 
 # Average error across tuning folds and the parameter values chosen during tuning
 k_fold_score = round(-1 * gcv_model_select.best_score_, 5)
+outer_kfold_score = round(results[results.model == chosen_alg]['mean_error'][0], 5)
 best_hyper_vals = gcv_model_select.best_params_
 
 # best_hyper_vals is a dict. Use it to create the df, then add the errors.
 model_stats = pd.DataFrame(data = best_hyper_vals, index = [1])
-model_stats = model_stats.assign(kfold_error = k_fold_score, train_error = train_error, test_error = test_error)
+model_stats = model_stats.assign(kfold_error = k_fold_score, outer_fold_error = outer_kfold_score, train_error = train_error, test_error = test_error)
 
 
 # evidently has to be written into a paragraph because print outputs can't be saved and there's no glue in python.
-msg = f'Python script finished in {time_elapsed} seconds. The chosen algorithm was {chosen_alg} with parameters, {best_hyper_vals}. Avg score over cv\'s test folds was {k_fold_score}. Training Error: {train_error}, Test Error: {test_error}'
+msg = f'Python script finished in {time_elapsed} seconds. The chosen algorithm was {chosen_alg} with parameters, {best_hyper_vals}. Avg score over cv\'s test folds was {k_fold_score}. Outer fold avg score was {outer_kfold_score}. Training Error: {train_error}, Test Error: {test_error}'
 
 # text me the results
 pb.push_note("Nested CV script finished", msg)

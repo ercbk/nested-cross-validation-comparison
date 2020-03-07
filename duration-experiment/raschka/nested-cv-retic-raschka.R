@@ -301,8 +301,14 @@ best_params <- as.data.frame(chosen_tuned$best_params_) %>%
    glue_data("{param} = {value}") %>% 
    glue_collapse(sep = ",", last = " and ")
 
+outer_kfold_error <- purrr::map_dfr(algorithm_comparison, ~select(., mean_error), .id = "model") %>% 
+   filter(mean_error == min(mean_error)) %>%
+   mutate(mean_error = round(mean_error, 5))
+   pull(mean_error)
+
 
 msg <- glue("Average of K-fold CV test folds: {kfold_error}
+     Outer-Fold Avg Error: {outer_kfold_error}
      Training Error: {train_error}
      Test Error: {test_error}
      Best Parameters for {chosen_alg}:

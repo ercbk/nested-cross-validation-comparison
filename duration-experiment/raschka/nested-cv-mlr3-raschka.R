@@ -241,8 +241,15 @@ best_params <- as.data.frame(chosen_train$tuning_result$params) %>%
       glue_data("{param} = {value}") %>% 
       glue_collapse(sep = ",", last = " and ")
 
+# avg error across outer-loop folds in ncv
+outer_kfold_error <- algorithm_comparison %>% 
+   filter(model == chosen_alg) %>%
+   mutate(mean_error = round(mean_error, 5)) %>% 
+   pull(mean_error)
+
 
 msg <- glue("Average of K-fold CV test folds: {kfold_error}
+     Outer-Fold Avg Error: {outer_kfold_error}
      Training Error: {train_error}
      Test Error: {test_error}
      Best Parameters for {chosen_alg}:
