@@ -7,7 +7,7 @@
 
 # output: list of model functions
 
-pacman::p_load(dplyr)
+
 
 create_models <- function(algorithms) {
       
@@ -39,6 +39,8 @@ create_models <- function(algorithms) {
             model
       }
       
+      # list of model objects depending on the algorithms inputted (switch is pretty cool)
+      # stop_glue throws error if algorithm inputted isn't available (Should be in glue pkg but isn't)
       mod_FUN_list <- purrr::map(algorithms, function(alg) {
             switch(alg,
                    rf = ranger_FUN -> mod_fun,

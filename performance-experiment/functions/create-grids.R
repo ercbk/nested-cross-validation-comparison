@@ -8,9 +8,11 @@
 # "glmnet" = Elastic Net regression
 # "svm" = Support Vector Machines
 
-pacman::p_load(dplyr)
+# output: list of grid objects
 
-create_grids <- function(algorithms, size = 100) {
+
+
+create_grids <- function(sim_dat, algorithms, size = 100) {
       
       # Elastic Net Regression
       
@@ -22,9 +24,12 @@ create_grids <- function(algorithms, size = 100) {
       
       # Random Forest
       
+      # Some of the parnsip model parameters have "unknown" for the default value ranges. finalize replaces the unknowns with values based on the data.
+      mtry_updated <- dials::finalize(dials::mtry(), select(sim_dat, -ncol(sim_dat)))
+      
       rf_params <- dials::grid_latin_hypercube(
-            dials::mtry(range = c(3, 4)),
-            dials::trees(range = c(200, 300)),
+            mtry_updated,
+            dials::trees(),
             size = size 
       )
       
@@ -36,6 +41,8 @@ create_grids <- function(algorithms, size = 100) {
             size = size 
       )
       
+      # list of grid objects depending on the algorithms inputted (switch is pretty cool)
+      # stop_glue throws error if algorithm inputted isn't available (Should be in glue pkg but isn't)
       grid_list <- purrr::map(algorithms, function(alg) {
             switch(alg,
                    rf = rf_params -> alg_grid,

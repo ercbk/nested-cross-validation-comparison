@@ -2,10 +2,19 @@
 
 # Takes the hyperparameter values that were chosen by the tuning process in the inner loop and uses them for cross-validation in the outer loop.
 
+# inputs:
+# 1. ncv_dat = ncv obj from list created by create-ncv-objects.R
+# 2. best_hypervals_list = output from inner-tune.R
+# 3. mod_FUN_list = output from create-models.R
+# 4. error_FUN = error function given at start of plan_<method>.R
+# 5. method = "kj" or "raschka"
+# 6. train_dat = entire training set; output from mlbench-data.R
+# 7. params_list = list of hyperparameter grids; output from create-grids.R
+
+# output: df with chosen model, chosen hyperparameters, outer-fold error stats: mean, median, sd error for each algorithm
 
 
 
-pacman::p_load(dplyr, furrr, data.table, dtplyr)
 
 outer_cv <- function(ncv_dat, best_hypervals_list, mod_FUN_list, error_FUN, method, train_dat = NULL, params_list = NULL) {
    if (method == "raschka" & is.null(train_dat)) {
@@ -27,16 +36,18 @@ outer_cv <- function(ncv_dat, best_hypervals_list, mod_FUN_list, error_FUN, meth
       error <- error_FUN(y_obs, pred)
       error
    }
-   outer_stats <- purrr::map2(mod_FUN_list, best_hypervals_list, function(mod_FUN, best_hyper_vals){
+   outer_stats <- furrr::future_map2(mod_FUN_list, best_hypervals_list, function(mod_FUN, best_hyper_vals){
       
       # fit models on the outer-loop folds using best hyperparams (e.g. 5 repeats, 10 folds = 50 models)
-      outer_fold_error <- future_map2_dfr(ncv_dat$splits, 1:nrow(best_hyper_vals), function(dat, row) {
+      outer_fold_error <- furrr::future_map2_dfr(ncv_dat$splits, 1:nrow(best_hyper_vals), function(dat, row) {
          params <- best_hyper_vals[row,]
          error <- mod_error(params, mod_FUN, dat)
          tibble(
             error = error
          )
-      }, .progress = TRUE) %>% 
+      }, 
+      # progress bar off when working with clusters
+      .progress = FALSE) %>% 
          bind_cols(best_hyper_vals) %>% 
          mutate_all(~round(., 6))
       
@@ -93,8 +104,8 @@ outer_cv <- function(ncv_dat, best_hypervals_list, mod_FUN_list, error_FUN, meth
       
       # tune chosen alg on the inner-loop cv strategy
       # code is an amalgam of funs: summarize_tune_results, tune_over_params
-      tuning_results <- purrr::map(total_train$splits, function(dat, mod_FUN, params) {
-         params$error <- future_map_dbl(1:nrow(params), function(row) {
+      tuning_results <- furrr::future_map(total_train$splits, function(dat, mod_FUN, params) {
+         params$error <- furrr::future_map_dbl(1:nrow(params), function(row) {
             params <- params[row,]
             mod_error(params, mod_FUN, dat)
          })
@@ -125,14 +136,4 @@ outer_cv <- function(ncv_dat, best_hypervals_list, mod_FUN_list, error_FUN, meth
 }
 
 
-# cv_stats <- outer_cv(
-#    ncv_dat = ncv_dat_list$ncv_data[[1]],
-#    best_hypervals_list = best_hypervals_list,
-#    mod_FUN_list = mod_FUN_list,
-#    error_FUN = error_FUN,
-#    method = method,
-#    train_dat = ncv_dat_list$sim_data[[1]],
-#    params_list = params_list)
 
-
- 

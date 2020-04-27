@@ -3,6 +3,17 @@
 
 # Chooses the best algorithm, fits best model on entire training set, predicts against large simulated data set
 
+# inputs:
+# 1. train_dat = the entire training dataset
+# 2. large_dat = the test dataset
+# 3. cv_stats = outer_cv.R output: df with chosen model, outer fold stats, hyperparams
+# 4. mod_FUN_list = list of model objects created from create_models.R
+# 5. params_list = list of hyperparameter grids created from create_grids.R
+# 6. error_FUN = error function given at the start of plan_<method>.R
+# 7. method = "kj" or "raschka", given at the start of plan_<method>.R
+
+# output: df with algorithm, hyperparams, and error values
+
 
 ncv_compare <- function(train_dat, large_dat, cv_stats, mod_FUN_list, params_list, error_FUN, method) {
    
@@ -27,9 +38,10 @@ ncv_compare <- function(train_dat, large_dat, cv_stats, mod_FUN_list, params_lis
          select(names(params_list[[chosen_alg]]))
    }
    
+   # fit model over entire training set
    fit <- mod_FUN(params, train_dat)
    
-   # fit <- mod_FUN(params, ncv_dat_list$sim_data[[1]])
+   # predict on test set
    preds <- predict(fit, large_dat)
    if (!is.data.frame(preds)) {
       preds <- preds$predictions
