@@ -38,7 +38,7 @@ inner_tune <- function(ncv_dat, mod_FUN_list, params_list, error_FUN) {
    summarize_tune_results <- function(dat, mod_FUN, params) {
       # Return row-bound tibble that has the 25 bootstrap results
       param_names <- names(params)
-      furrr::future_map_dfr(dat$splits, tune_over_params, mod_FUN, params, .progress = FALSE) %>%
+      furrr::future_map_dfr(dat$splits, tune_over_params, mod_FUN, params) %>%
       lazy_dt(., key_by = param_names) %>% 
          # For each value of the tuning parameter, compute the
          # average <error> which is the inner bootstrap estimate.

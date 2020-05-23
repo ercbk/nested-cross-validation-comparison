@@ -45,9 +45,7 @@ outer_cv <- function(ncv_dat, best_hypervals_list, mod_FUN_list, error_FUN, meth
          tibble(
             error = error
          )
-      }, 
-      # progress bar off when working with clusters
-      .progress = FALSE) %>% 
+      }) %>% 
          bind_cols(best_hyper_vals) %>% 
          mutate_all(~round(., 6))
       

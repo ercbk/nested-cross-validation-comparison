@@ -11,9 +11,9 @@
 
 
 error_FUN <- function(y_obs, y_hat){
-      y_obs <- unlist(y_obs)
-      y_hat <- unlist(y_hat)
-      Metrics::mae(y_obs, y_hat)
+   y_obs <- unlist(y_obs)
+   y_hat <- unlist(y_hat)
+   Metrics::mae(y_obs, y_hat)
 }
 
 method <- "kj"
@@ -34,12 +34,12 @@ plan <- drake_plan(
    # hyperparameter grids for each algorithm
    # This probably doesn't need to be a "dynamic" target since mtry is only concerned about the number of columns in data (see script), but I'll do it anyways
    params_list_100 = create_grids(sim_dat_100,
-                              algorithms,
-                              size = grid_size),
+                                  algorithms,
+                                  size = grid_size),
    # create a separate ncv data object for each repeat value
    ncv_dat_100 = create_ncv_objects(sim_dat_100,
-                                       repeats,
-                                       method),
+                                    repeats,
+                                    method),
    # runs nested-cv and compares ncv error with out-of-sample error
    # outputs: ncv error, oos error, delta error, chosen algorithm, chosen hyperparameters 
    ncv_results_100 = target(
@@ -52,9 +52,6 @@ plan <- drake_plan(
               method),
       dynamic = map(ncv_dat_100)
    ),
-   # add index columns to identify the results according to sample size and number of repeats
-   perf_results_100 = tibble(n = 100, repeats = repeats) %>%
-      bind_cols(ncv_results_100),
    
    # repeat for the rest of the sample sizes
    # sample size = 800
@@ -74,30 +71,45 @@ plan <- drake_plan(
               error_FUN,
               method),
       dynamic = map(ncv_dat_800)
-   ),
-   perf_results_800 = tibble(n = 800, repeats = repeats) %>%
-      bind_cols(ncv_results_800),
-   
-   # sample size = 2000
-   sim_dat_2000 = mlbench_data(2000),
-   params_list_2000 = create_grids(sim_dat_2000,
-                                  algorithms,
-                                  size = grid_size),
-   ncv_dat_2000 = create_ncv_objects(sim_dat_2000,
-                                    repeats,
-                                    method),
-   ncv_results_2000 = target(
-      run_ncv(ncv_dat_2000,
-              sim_dat_2000,
-              large_dat,
-              mod_FUN_list,
-              params_list_2000,
-              error_FUN,
-              method),
-      dynamic = map(ncv_dat_2000)
-   ),
-   perf_results_2000 = tibble(n = 2000, repeats = repeats) %>%
-      bind_cols(ncv_results_2000)
+   )#,
+   # 
+   # # sample size = 2000
+   # sim_dat_2000 = mlbench_data(2000),
+   # params_list_2000 = create_grids(sim_dat_2000,
+   #                                algorithms,
+   #                                size = grid_size),
+   # ncv_dat_2000 = create_ncv_objects(sim_dat_2000,
+   #                                  repeats,
+   #                                  method),
+   # ncv_results_2000 = target(
+   #    run_ncv(ncv_dat_2000,
+   #            sim_dat_2000,
+   #            large_dat,
+   #            mod_FUN_list,
+   #            params_list_2000,
+   #            error_FUN,
+   #            method),
+   #    dynamic = map(ncv_dat_2000)
+   # ),
+   # 
+   # # sample size = 5000
+   # sim_dat_5000 = mlbench_data(5000),
+   # params_list_5000 = create_grids(sim_dat_5000,
+   #                                algorithms,
+   #                                size = grid_size),
+   # ncv_dat_5000 = create_ncv_objects(sim_dat_5000,
+   #                                  repeats,
+   #                                  method),
+   # ncv_results_5000 = target(
+   #    run_ncv(ncv_dat_5000,
+   #            sim_dat_5000,
+   #            large_dat,
+   #            mod_FUN_list,
+   #            params_list_5000,
+   #            error_FUN,
+   #            method),
+   #    dynamic = map(ncv_dat_5000)
+   # )
    
 )
 

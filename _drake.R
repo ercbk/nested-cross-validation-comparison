@@ -19,13 +19,6 @@ source("performance-experiment/functions/run-ncv.R")
 source("performance-experiment/Kuhn-Johnson/plan-kj.R")
 
 
-# text me if an error occurs
-options(error = function() {
-      library(RPushbullet)
-      pbPost("note", "Error", geterrmessage())
-      if(!interactive()) stop(geterrmessage())
-})
-
 
 
 set.seed(2019)
@@ -39,39 +32,36 @@ ssh_private_key_file <- Sys.getenv("AWSKEYPATH")
 
 
 cl <- future::makeClusterPSOCK(
-   
-   ## Public IP numbers of EC2 instances
-   public_ips,
-   
-   ## User name (always 'ubuntu')
-   user = "ubuntu",
-   
-   ## Use private SSH key registered with AWS
-   ## futureSettings is a saved PuTTY session with settings to keep ssh active
-   rshcmd = c("plink", "-ssh", "-load", "futureSettings","-i", ssh_private_key_file),
-   rshopts = c(
-      "-sshrawlog", "ec2-ssh-raw.log"
-   ),
-   
-   rscript_args = c("-e", shQuote(".libPaths('/home/rstudio/R/x86_64-pc-linux-gnu-library/3.6')")
-   ), 
-   verbose = TRUE
+      
+      ## Public IP numbers of EC2 instances
+      public_ips,
+      
+      ## User name (always 'ubuntu')
+      user = "ubuntu",
+      
+      ## Use private SSH key registered with AWS
+      ## futureSettings is a saved PuTTY session with settings to keep ssh active
+      rshcmd = c("plink", "-ssh", "-load", "futureSettings","-i", ssh_private_key_file),
+      rshopts = c(
+            "-sshrawlog", "ec2-ssh-raw.log"
+      ),
+      
+      rscript_args = c("-e", shQuote(".libPaths('/home/rstudio/R/x86_64-pc-linux-gnu-library/3.6')")
+      ), 
+      verbose = TRUE,
+      timeout = 2592000*100
 )
 
 
 future::plan(list(tweak(cluster, workers = cl), multiprocess))
 
 
+
 # verbose = 0 prints nothing, verbose = 1 prints message as each target completes; verbose = 2 adds a progress bar that tracks target completion
-make(
+drake_config(
       plan,
-      verbose = 1
+      verbose = 1,
+      lock_envir = FALSE,
+      jobs_preprocess = 7
 )
 
-# network graph of the drake plan
-vis_drake_graph(plan, file = "performance-experiment/output/kj-plan-network.png", build_times = "build", main = "Performance Experiment")
-
-# text me when it finishes
-RPushbullet::pbPost("note", title="kj performance experiment", body="perf run finished")
-
-parallel::stopCluster(cl)

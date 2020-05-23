@@ -4,3 +4,4 @@
 .Ruserdata
 .env
 .drake
+ec2-ssh-raw.log
