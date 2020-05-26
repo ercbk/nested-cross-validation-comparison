@@ -90,26 +90,26 @@ plan <- drake_plan(
               error_FUN,
               method),
       dynamic = map(ncv_dat_2000)
-   )#,
+   ),
 
    # sample size = 5000
-   # sim_dat_5000 = mlbench_data(5000),
-   # params_list_5000 = create_grids(sim_dat_5000,
-   #                                algorithms,
-   #                                size = grid_size),
-   # ncv_dat_5000 = create_ncv_objects(sim_dat_5000,
-   #                                  repeats,
-   #                                  method),
-   # ncv_results_5000 = target(
-   #    run_ncv(ncv_dat_5000,
-   #            sim_dat_5000,
-   #            large_dat,
-   #            mod_FUN_list,
-   #            params_list_5000,
-   #            error_FUN,
-   #            method),
-   #    dynamic = map(ncv_dat_5000)
-   # )
+   sim_dat_5000 = mlbench_data(5000),
+   params_list_5000 = create_grids(sim_dat_5000,
+                                  algorithms,
+                                  size = grid_size),
+   ncv_dat_5000 = create_ncv_objects(sim_dat_5000,
+                                    repeats,
+                                    method),
+   ncv_results_5000 = target(
+      run_ncv(ncv_dat_5000,
+              sim_dat_5000,
+              large_dat,
+              mod_FUN_list,
+              params_list_5000,
+              error_FUN,
+              method),
+      dynamic = map(ncv_dat_5000)
+   )
    
 )
 

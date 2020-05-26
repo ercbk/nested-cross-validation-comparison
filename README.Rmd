@@ -111,13 +111,14 @@ durations
 Experiment details:  
 
   * The fastest implementation of each method will be used in running a nested cross-validation with different sizes of data ranging from 100 to 5000 observations and different numbers of repeats of the outer-loop cv strategy.  
+      * The {mlr3} implementation was the fastest for Raschka's method, but the Ranger-Kuhn-Johnson implementation is close. So I'll be using Ranger-Kuhn-Johnson for both methods.  
   * The chosen algorithm and hyperparameters will used to predict on a 100K row simulated dataset and the mean absolute error will be calculated for each combination of repeat, data size, and method.  
-  * AWS  
-  * Drake  
+  * Runtimes began to explode after n = 800 for my 8 vcpu, 16 GB RAM desktop, so I ran this experiment using AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge for Random Forest.  
+  * I'll be iterating through different numbers of repeats and sample sizes, so I'll be transitioning from imperative scripts to a functional approach. Given the long runtimes and impermanent nature of my internet connection, it would be nice to cache each iteration as it finishes. The [{drake}](https://github.com/ropensci/drake) package is superb on both counts, so I'm using it to orchestrate.  
 
-```{r perf_build_times, echo=FALSE, message=FALSE}
+```{r perf_build_times, echo=FALSE, message=FALSE, cache=TRUE}
+
 pacman::p_load(extrafont,dplyr, purrr, lubridate, ggplot2, drake)
-
 bt <- build_times(starts_with("ncv_results"), digits = 4)
 
 subtarget_bts <- bt %>% 
@@ -137,29 +138,38 @@ subtargets <- subtargets_raw %>%
              n = factor(n),
              elapsed = round(as.numeric(elapsed)/3600, 2))
 
+```
+
+```{r perf_bt_charts, echo=FALSE, message=FALSE}
+
+fill_colors <- unname(swatches::read_ase("palettes/Forest Floor.ase"))
 
 ggplot(subtargets, aes(y = elapsed, x = repeats,
                        fill = n, label = elapsed)) +
-      geom_bar(stat = "identity", position = position_dodge(width = 0.8)) +
-      geom_text(hjust = 1.3,  size = 3.5,
-                color = "white", position = position_dodge(width = 0.8)) +
-      coord_flip() +
-      labs(y = "Runtime (hrs)", x = "Repeats",
-           title = "Kuhn-Johnson", fill = "Sample Size") +
-      theme(title = element_text(family = "Roboto"),
-            text = element_text(family = "Roboto"),
-            legend.position = "top",
-            axis.ticks = element_blank(),
-            axis.text.x = element_blank(),
-            panel.background = element_rect(fill = "ivory",
-                                            colour = "ivory"),
-            plot.background = element_rect(fill = "ivory"),
-            panel.border = element_blank(),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank()
-      )
+   geom_col(position = position_dodge(width = 0.8)) +
+   scale_fill_manual(values = fill_colors[4:7]) +
+   geom_text(hjust = 1.3,  size = 3.5,
+             color = "white", position = position_dodge(width = 0.8)) +
+   coord_flip() +
+   labs(y = "Runtime (hrs)", x = "Repeats",
+        title = "Kuhn-Johnson", fill = "Sample Size") +
+   theme(title = element_text(family = "Roboto"),
+         text = element_text(family = "Roboto"),
+         legend.position = "top",
+         legend.background = element_rect(fill = "ivory"),
+         legend.key = element_rect(fill = "ivory"),
+         axis.ticks = element_blank(),
+         axis.text.x = element_blank(),
+         panel.background = element_rect(fill = "ivory",
+                                         colour = "ivory"),
+         plot.background = element_rect(fill = "ivory"),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank()
+   )
 
 ```
+
 
 
 

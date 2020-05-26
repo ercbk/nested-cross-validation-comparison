@@ -89,14 +89,24 @@ Experiment details:
   - The fastest implementation of each method will be used in running a
     nested cross-validation with different sizes of data ranging from
     100 to 5000 observations and different numbers of repeats of the
-    outer-loop cv strategy.  
+    outer-loop cv strategy.
+      - The {mlr3} implementation was the fastest for Raschka’s method,
+        but the Ranger-Kuhn-Johnson implementation is close. So I’ll be
+        using Ranger-Kuhn-Johnson for both methods.  
   - The chosen algorithm and hyperparameters will used to predict on a
     100K row simulated dataset and the mean absolute error will be
     calculated for each combination of repeat, data size, and method.  
-  - AWS  
-  - Drake
+  - Runtimes began to explode after n = 800 for my 8 vcpu, 16 GB RAM
+    desktop, so I ran this experiment using AWS instances: a r5.2xlarge
+    for the Elastic Net and a r5.24xlarge for Random Forest.  
+  - I’ll be iterating through different numbers of repeats and sample
+    sizes, so I’ll be transitioning from imperative scripts to a
+    functional approach. Given the long runtimes and impermanent nature
+    of my internet connection, it would be nice to cache each iteration
+    as it finishes. The [{drake}](https://github.com/ropensci/drake)
+    package is superb on both counts, so I’m using it to orchestrate.
 
-![](README_files/figure-gfm/perf_build_times-1.png)<!-- -->
+![](README_files/figure-gfm/perf_bt_charts-1.png)<!-- -->
 
 References
 
