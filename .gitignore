@@ -6,3 +6,4 @@
 .drake
 ec2-ssh-raw.log
 README_cache
+check-results.R

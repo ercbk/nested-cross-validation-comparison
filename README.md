@@ -89,22 +89,26 @@ Experiment details:
       - The {mlr3} implementation was the fastest for Raschka’s method,
         but the Ranger-Kuhn-Johnson implementation was close. To
         simplify, I’ll be using Ranger-Kuhn-Johnson for both methods.  
-  - The chosen algorithm and hyperparameters will used to predict on a
-    100K row simulated dataset and the mean absolute error will be
-    calculated for each combination of repeat, data size, and method.  
-  - Runtimes began to explode after n = 800 for my 8 vcpu, 16 GB RAM
-    desktop, therefore I ran this experiment using AWS instances: a
-    r5.2xlarge for the Elastic Net and a r5.24xlarge for Random
-    Forest.  
-  - I’ll be transitioning from imperative scripts to a functional
-    approach, because I’m iterating through different numbers of repeats
-    and sample sizes. Given the long runtimes and impermanent nature of
-    my internet connection, it would also be nice to cache each
-    iteration as it finishes. The
+  - The chosen algorithm and hyperparameters will be used to predict on
+    a 100K row simulated dataset.  
+  - The percent error between the the average mean absolute error (MAE)
+    across the outer-loop folds and the MAE of the predictions on this
+    100K dataset will be calculated for each combination of repeat, data
+    size, and method.  
+  - To make this experiment manageable in terms of runtimes, I’m using
+    AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge
+    for Random Forest.  
+  - Iterating through different numbers of repeats, sample sizes, and
+    methods makes a functional approach more appropriate than running
+    imperative scripts. Also, given the long runtimes and impermanent
+    nature of my internet connection, it would also be nice to cache
+    each iteration as it finishes. The
     [{drake}](https://github.com/ropensci/drake) package is superb on
     both counts, so I’m using it to orchestrate.
 
 ![](README_files/figure-gfm/perf_bt_charts-1.png)<!-- -->
+
+![](README_files/figure-gfm/perf-error-line-1.png)<!-- -->
 
 References
 
