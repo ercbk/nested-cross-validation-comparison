@@ -24,16 +24,12 @@ and the other by [Max Kuhn and Kjell
 Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).  
 I’ll be examining two aspects of nested cross-validation:
 
-1.  Duration: Which packages and functions give us the fastest
-    implementation of each method?  
+1.  Duration: Find out which packages and combinations of model
+    functions give us the fastest implementation of each method.  
 2.  Performance: First, develop a testing framework. Then, using a
-    generated dataset, find how many repeats, given the number of
-    samples, should we expect to need in order to obtain a reasonably
+    generated dataset, calculate how many repeats, given the sample
+    size, should we expect to need in order to obtain a reasonably
     accurate out-of-sample error estimate.
-
-With regards to the question of speed, I’ll will be testing
-implementations of both methods from various packages which include
-{tune}, {mlr3}, {h2o}, and {sklearn}.
 
 ## Duration Experiment
 

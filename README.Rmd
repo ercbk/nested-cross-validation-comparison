@@ -10,10 +10,8 @@ Nested cross-validation has become a recommended technique for situations in whi
 The primary issue with this technique is that it is computationally very expensive with potentially tens of 1000s of models being trained during the process. While researching this technique, I found two slightly different methods of performing nested cross-validation — one authored by [Sabastian Raschka](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_eval4-algo/code/11-eval4-algo__nested-cv_verbose1.ipynb) and the other by [Max Kuhn and Kjell Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).  
 I'll be examining two aspects of nested cross-validation:  
 
-1. Duration: Which packages and functions give us the fastest implementation of each method?  
-2. Performance: First, develop a testing framework. Then, using a generated dataset, find how many repeats, given the number of samples, should we expect to need in order to obtain a reasonably accurate out-of-sample error estimate.  
-
-With regards to the question of speed, I'll will be testing implementations of both methods from various packages which include {tune}, {mlr3}, {h2o}, and {sklearn}.  
+1. Duration: Find out which packages and combinations of model functions give us the fastest implementation of each method.  
+2. Performance: First, develop a testing framework. Then, using a generated dataset, calculate how many repeats, given the sample size, should we expect to need in order to obtain a reasonably accurate out-of-sample error estimate.  
 
 
 ## Duration Experiment
@@ -81,7 +79,7 @@ kj <- runs %>%
    geom_bar(aes(color = after_scale(prismatic::clr_darken(rep("#BD9865",5), 0.3))), stat = "identity", width = 0.50, fill = "#BD9865") +
    coord_flip() +
    scale_x_reordered() +
-   geom_text(hjust = 1.3,  size = 3.5, color = "white") +
+   geom_text(hjust = 1.3,  size = 3.5, color = "black") +
    labs(x = NULL, y = NULL,
         title = "Kuhn-Johnson") +
    theme(plot.title = element_text(size = rel(0.9)))
