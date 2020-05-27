@@ -117,7 +117,7 @@ Experiment details:
   * To make this experiment manageable in terms of runtimes, I'm using AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge for Random Forest.  
   * Iterating through different numbers of repeats, sample sizes, and methods makes a functional approach more appropriate than running imperative scripts. Also, given the long runtimes and impermanent nature of my internet connection, it would also be nice to cache each iteration as it finishes. The [{drake}](https://github.com/ropensci/drake) package is superb on both counts, so I'm using it to orchestrate.  
 
-```{r perf_build_times, echo=FALSE, message=FALSE, cache=TRUE}
+```{r perf_build_times, echo=FALSE, message=FALSE, cache=FALSE}
 
 pacman::p_load(extrafont,dplyr, purrr, lubridate, ggplot2, drake)
 bt <- build_times(starts_with("ncv_results"), digits = 4)
