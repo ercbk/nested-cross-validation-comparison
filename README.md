@@ -3,6 +3,8 @@
 
 ### (In-progress)
 
+![](images/ncv.png)
+
 Nested cross-validation has become a recommended technique for
 situations in which the size of our dataset is insufficient to
 simultaneously handle hyperparameter tuning and algorithm comparison.
@@ -88,7 +90,9 @@ Experiment details:
     outer-loop cv strategy.
       - The {mlr3} implementation was the fastest for Raschka’s method,
         but the Ranger-Kuhn-Johnson implementation was close. To
-        simplify, I’ll be using Ranger-Kuhn-Johnson for both methods.  
+        simplify, I’ll be using
+        [Ranger-Kuhn-Johnson](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R)
+        for both methods.  
   - The chosen algorithm and hyperparameters will be used to predict on
     a 100K row simulated dataset.  
   - The percent error between the the average mean absolute error (MAE)
