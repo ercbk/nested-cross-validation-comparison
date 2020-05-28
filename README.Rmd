@@ -17,7 +17,7 @@ I'll be examining two aspects of nested cross-validation:
 
 
 ## Duration Experiment
-##### Experiment details:  
+#### Experiment details:  
    
    * Random Forest and Elastic Net Regression algorithms  
    * Both with 100x2 hyperparameter grids  
@@ -30,7 +30,7 @@ I'll be examining two aspects of nested cross-validation:
       + outer loop: 5 folds  
       + inner loop: 2 folds  
 
-(Size of the data sets are the same as those in the original scripts by the authors)  
+The sizes of the data sets are the same as those in the original scripts by the authors. [MLFlow](https://mlflow.org/docs/latest/index.html) is used to keep track of the duration (seconds) of each run along with the implementation and method used.  
 
 
 Various elements of the technique can be altered to improve performance. These include:  
@@ -40,9 +40,7 @@ Various elements of the technique can be altered to improve performance. These i
 3. Inner-Loop CV strategy  
 4. Grid search strategy  
 
-These elements also affect the run times. Both methods will be using the same size grids, but Kuhn-Johnson uses repeats and more folds in the outer and inner loops while Raschka's trains an extra model over the entire training set at the end at the end. Using Kuhn-Johnson, 50,000 models (grid size * number of repeats * number of folds in the outer-loop * number of folds/resamples in the inner-loop) will be trained for each algorithm — using Raschka's, 1,001 models.  
-
-[MLFlow](https://mlflow.org/docs/latest/index.html) was used to keep track of the duration (seconds) of each run along with the implementation and method used. I've used "implementation" to encapsulate not only the combinations of various model functions, but also, to describe the various changes in coding structures that accompanies using each package's functions, i.e. I can't just plug-and-play different packages' model functions into the same script.  
+These elements also affect the run times. Both methods are using the same size grids, but Kuhn-Johnson uses repeats and more folds in the outer and inner loops while Raschka's trains an extra model over the entire training set at the end at the end. Using Kuhn-Johnson, 50,000 models (grid size * number of repeats * number of folds in the outer-loop * number of folds/resamples in the inner-loop) are trained for each algorithm — using Raschka's, 1,001 models.  
 
 ![](duration-experiment/outputs/0225-results.png)  
 
@@ -108,18 +106,18 @@ durations
 
 ## Performance Experiment  
 
-##### Experiment details:  
+#### Experiment details:  
 
-  * The fastest implementation of each method was used in running a nested cross-validation with different sizes of data ranging from 100 to 5000 observations and different numbers of repeats of the outer-loop cv strategy.  
-      * The {mlr3} implementation was the fastest for Raschka's method, but the Ranger-Kuhn-Johnson implementation was close. To simplify, I'll be using [Ranger-Kuhn-Johnson](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R) for both methods.  
-  * The chosen algorithm and hyperparameters was used to predict on a 100K row simulated dataset.  
-  * The percent error between the the average mean absolute error (MAE) across the outer-loop folds and the MAE of the predictions on this 100K dataset was calculated for each combination of repeat, data size, and method.  
-  * To make this experiment manageable in terms of runtimes, I used AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge for Random Forest.  
-  * Iterating through different numbers of repeats, sample sizes, and methods makes a functional approach more appropriate than running imperative scripts. Also, given the long runtimes and impermanent nature of my internet connection, it would also be nice to cache each iteration as it finishes. The [{drake}](https://github.com/ropensci/drake) package is superb on both counts, so I'm used it to orchestrate.  
+  * The fastest implementation of each method is used in running a nested cross-validation with different sizes of data ranging from 100 to 5000 observations and different numbers of repeats of the outer-loop cv strategy.  
+      * The {mlr3} implementation is the fastest for Raschka's method, but the Ranger-Kuhn-Johnson implementation is close. To simplify, I am using [Ranger-Kuhn-Johnson](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R) for both methods.  
+  * The chosen algorithm and hyperparameters predicts on a 100K row simulated dataset.  
+  * The percent error between the the average mean absolute error (MAE) across the outer-loop folds and the MAE of the predictions on this 100K dataset is calculated for each combination of repeat, data size, and method.  
+  * To make this experiment manageable in terms of runtimes, I am using AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge for Random Forest.  
+  * Iterating through different numbers of repeats, sample sizes, and methods makes a functional approach more appropriate than running imperative scripts. Also, given the long runtimes and impermanent nature of my internet connection, it would also be nice to cache each iteration as it finishes. The [{drake}](https://github.com/ropensci/drake) package is superb on both counts, so I'm using it to orchestrate.  
 
 ```{r perf_build_times, echo=FALSE, message=FALSE}
 
-pacman::p_load(extrafont,dplyr, purrr, lubridate, ggplot2, ggfittext, drake)
+pacman::p_load(extrafont,dplyr, purrr, lubridate, ggplot2, ggfittext, drake, patchwork)
 bt <- build_times(starts_with("ncv_results"), digits = 4)
 
 subtarget_bts <- bt %>% 
@@ -149,7 +147,7 @@ readr::write_csv(subtargets, "performance-experiment/output/perf-exp-output.csv"
 
 fill_colors <- unname(swatches::read_ase("palettes/Forest Floor.ase"))
 
-ggplot(subtargets, aes(y = elapsed, x = repeats,
+b <- ggplot(subtargets, aes(y = elapsed, x = repeats,
                        fill = n, label = elapsed)) +
    geom_col(position = position_dodge(width = 0.85)) +
    scale_fill_manual(values = fill_colors[4:7]) +
@@ -159,14 +157,15 @@ ggplot(subtargets, aes(y = elapsed, x = repeats,
                  place = "right", contrast = TRUE) +
    coord_flip() +
    labs(y = "Runtime (hrs)", x = "Repeats",
-        title = "Kuhn-Johnson", fill = "Sample Size") +
+        fill = "Sample Size") +
    theme(title = element_text(family = "Roboto"),
          text = element_text(family = "Roboto"),
          legend.position = "top",
          legend.background = element_rect(fill = "ivory"),
          legend.key = element_rect(fill = "ivory"),
          axis.ticks = element_blank(),
-         axis.text.x = element_blank(),
+         axis.text.x = element_text(size = 11),
+         axis.text.y = element_text(size = 11),
          panel.background = element_rect(fill = "ivory",
                                          colour = "ivory"),
          plot.background = element_rect(fill = "ivory"),
@@ -178,22 +177,24 @@ ggplot(subtargets, aes(y = elapsed, x = repeats,
 ```
 
 ```{r perf-error-line, echo=FALSE, message=FALSE}
-ggplot(subtargets, aes(x = repeats, y = percent_error, group = n)) +
+e <- ggplot(subtargets, aes(x = repeats, y = percent_error, group = n)) +
    geom_point(aes(color = n), size = 3) +
    geom_line(aes(color = n), size = 2) +
    expand_limits(y = c(0, 0.10)) +
    scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) +
    scale_color_manual(values = fill_colors[4:7]) +
    labs(y = "Percent Error", x = "Repeats",
-        title = "Kuhn-Johnson", color = "Sample Size") +
+        color = "Sample Size") +
    theme(title = element_text(family = "Roboto"),
          text = element_text(family = "Roboto"),
          legend.position = "top",
          legend.background = element_rect(fill = "ivory"),
          legend.key = element_rect(fill = "ivory"),
          axis.ticks = element_blank(),
+         axis.text.x = element_text(size = 11),
+         axis.text.y = element_text(size = 11),
          panel.background = element_rect(fill = "ivory",
-                                         colour = "ivory"),
+                                         color = "ivory"),
          plot.background = element_rect(fill = "ivory"),
          panel.border = element_blank(),
          panel.grid.major = element_blank(),
@@ -201,12 +202,21 @@ ggplot(subtargets, aes(x = repeats, y = percent_error, group = n)) +
    )
 ```
 
-##### Results:  
+```{r kj-patch, echo=FALSE, fig.width=10, fig.height=6}
+b + e + plot_layout(guides = "auto") +
+   plot_annotation(title = "Kuhn-Johnson") &
+   theme(legend.position = "top",
+         panel.background = element_rect(fill = "ivory",
+                                         color = "ivory"),
+         plot.background = element_rect(fill = "ivory"),)
+```
+
+#### Results:  
 
 Kuhn-Johnson:  
 
   * Runtimes for n = 100 and n = 800 are close, and there's a large jump in runtime going from n = 2000 to n = 5000.  
-  * The number of repeats had little effect on the amount of percent error.
+  * The number of repeats has little effect on the amount of percent error.
   * For n = 100, there is substantially more variation in percent error than in the other sample sizes.  
   * While there is a large runtime cost that comes with increasing the sample size from 2000 to 5000 obsservations, it doesn't seem to provide any benefit in gaining a more accurate estimate of the out-of-sample error.  
   

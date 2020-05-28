@@ -35,7 +35,7 @@ I’ll be examining two aspects of nested cross-validation:
 
 ## Duration Experiment
 
-##### Experiment details:
+#### Experiment details:
 
   - Random Forest and Elastic Net Regression algorithms  
   - Both with 100x2 hyperparameter grids  
@@ -48,8 +48,10 @@ I’ll be examining two aspects of nested cross-validation:
       - outer loop: 5 folds  
       - inner loop: 2 folds
 
-(Size of the data sets are the same as those in the original scripts by
-the authors)
+The sizes of the data sets are the same as those in the original scripts
+by the authors. [MLFlow](https://mlflow.org/docs/latest/index.html) is
+used to keep track of the duration (seconds) of each run along with the
+implementation and method used.
 
 Various elements of the technique can be altered to improve performance.
 These include:
@@ -59,21 +61,13 @@ These include:
 3.  Inner-Loop CV strategy  
 4.  Grid search strategy
 
-These elements also affect the run times. Both methods will be using the
+These elements also affect the run times. Both methods are using the
 same size grids, but Kuhn-Johnson uses repeats and more folds in the
 outer and inner loops while Raschka’s trains an extra model over the
 entire training set at the end at the end. Using Kuhn-Johnson, 50,000
 models (grid size \* number of repeats \* number of folds in the
-outer-loop \* number of folds/resamples in the inner-loop) will be
-trained for each algorithm — using Raschka’s, 1,001 models.
-
-[MLFlow](https://mlflow.org/docs/latest/index.html) was used to keep
-track of the duration (seconds) of each run along with the
-implementation and method used. I’ve used “implementation” to
-encapsulate not only the combinations of various model functions, but
-also, to describe the various changes in coding structures that
-accompanies using each package’s functions, i.e. I can’t just
-plug-and-play different packages’ model functions into the same script.
+outer-loop \* number of folds/resamples in the inner-loop) are trained
+for each algorithm — using Raschka’s, 1,001 models.
 
 ![](duration-experiment/outputs/0225-results.png)
 
@@ -83,45 +77,43 @@ plug-and-play different packages’ model functions into the same script.
 
 ## Performance Experiment
 
-##### Experiment details:
+#### Experiment details:
 
-  - The fastest implementation of each method was used in running a
+  - The fastest implementation of each method is used in running a
     nested cross-validation with different sizes of data ranging from
     100 to 5000 observations and different numbers of repeats of the
     outer-loop cv strategy.
-      - The {mlr3} implementation was the fastest for Raschka’s method,
-        but the Ranger-Kuhn-Johnson implementation was close. To
-        simplify, I’ll be using
+      - The {mlr3} implementation is the fastest for Raschka’s method,
+        but the Ranger-Kuhn-Johnson implementation is close. To
+        simplify, I am using
         [Ranger-Kuhn-Johnson](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R)
         for both methods.  
-  - The chosen algorithm and hyperparameters was used to predict on a
-    100K row simulated dataset.  
+  - The chosen algorithm and hyperparameters predicts on a 100K row
+    simulated dataset.  
   - The percent error between the the average mean absolute error (MAE)
     across the outer-loop folds and the MAE of the predictions on this
-    100K dataset was calculated for each combination of repeat, data
+    100K dataset is calculated for each combination of repeat, data
     size, and method.  
-  - To make this experiment manageable in terms of runtimes, I used AWS
-    instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge for
-    Random Forest.  
+  - To make this experiment manageable in terms of runtimes, I am using
+    AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge
+    for Random Forest.  
   - Iterating through different numbers of repeats, sample sizes, and
     methods makes a functional approach more appropriate than running
     imperative scripts. Also, given the long runtimes and impermanent
     nature of my internet connection, it would also be nice to cache
     each iteration as it finishes. The
     [{drake}](https://github.com/ropensci/drake) package is superb on
-    both counts, so I’m used it to orchestrate.
+    both counts, so I’m using it to orchestrate.
 
-![](README_files/figure-gfm/perf_bt_charts-1.png)<!-- -->
+![](README_files/figure-gfm/kj-patch-1.png)<!-- -->
 
-![](README_files/figure-gfm/perf-error-line-1.png)<!-- -->
-
-##### Results:
+#### Results:
 
 Kuhn-Johnson:
 
   - Runtimes for n = 100 and n = 800 are close, and there’s a large jump
     in runtime going from n = 2000 to n = 5000.  
-  - The number of repeats had little effect on the amount of percent
+  - The number of repeats has little effect on the amount of percent
     error.
   - For n = 100, there is substantially more variation in percent error
     than in the other sample sizes.  
