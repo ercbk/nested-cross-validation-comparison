@@ -127,7 +127,7 @@ implementation and method used.
   - For n = 100, there is substantially more variation in percent error
     than in the other sample sizes.  
   - While there is a large runtime cost that comes with increasing the
-    sample size from 2000 to 5000 obsservations, it doesn’t seem to
+    sample size from 2000 to 5000 observations, it doesn’t seem to
     provide any benefit in gaining a more accurate estimate of the
     out-of-sample error.
 

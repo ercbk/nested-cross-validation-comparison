@@ -218,7 +218,7 @@ b + e + plot_layout(guides = "auto") +
   * Runtimes for n = 100 and n = 800 are close, and there's a large jump in runtime going from n = 2000 to n = 5000.  
   * The number of repeats has little effect on the amount of percent error.
   * For n = 100, there is substantially more variation in percent error than in the other sample sizes.  
-  * While there is a large runtime cost that comes with increasing the sample size from 2000 to 5000 obsservations, it doesn't seem to provide any benefit in gaining a more accurate estimate of the out-of-sample error.  
+  * While there is a large runtime cost that comes with increasing the sample size from 2000 to 5000 observations, it doesn't seem to provide any benefit in gaining a more accurate estimate of the out-of-sample error.  
   
 
 ```{r perf_build_times_r, echo=FALSE, message=FALSE}
@@ -244,7 +244,7 @@ subtargets_raw_r <- map_dfr(subtarget_bts_r$target, function(x) {
 subtargets_r <- subtargets_raw_r %>% 
       mutate(repeats = factor(repeats),
              n = factor(n),
-             elapsed = round(as.numeric(elapsed)/3600, 2),
+             elapsed = round(as.numeric(elapsed)/60, 2),
              percent_error = round(delta_error/oos_error, 3))
 
 readr::write_csv(subtargets_r, "performance-experiment/output/perf-exp-output-r.csv")
@@ -261,7 +261,7 @@ b_r <- ggplot(subtargets_r, aes(y = elapsed, x = repeats,
    geom_bar_text(position = "dodge", min.size = 9,
                  place = "right", contrast = TRUE) +
    coord_flip() +
-   labs(y = "Runtime (hrs)", x = "Repeats",
+   labs(y = "Runtime (minutes)", x = "Repeats",
         fill = "Sample Size") +
    theme(title = element_text(family = "Roboto"),
          text = element_text(family = "Roboto"),
