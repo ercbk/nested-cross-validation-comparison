@@ -321,7 +321,7 @@ b_r + e_r + plot_layout(guides = "auto") +
 
 #### Results:  
 
-  * The longest runtime is under 30 minutes, so runtime isn't a large consideration if we are making a choice about sample size.  
+  * The longest runtime is under 30 minutes, so runtime isn't as large of a consideration if we are only comparing a few algorithms.  
   * There isn't much difference in runtime between n = 100 and n = 2000.  
   * For n = 100, there's a relatively large change in percent error when going from 1 repeat to 2 repeats. The error estimate then stabilizes for repeats 3 through 5.  
   * n = 5000 gives poorer out-of-sample error estimates than n = 800 and n = 2000 for all values of repeats.  

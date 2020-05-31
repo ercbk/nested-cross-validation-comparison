@@ -135,8 +135,8 @@ implementation and method used.
 
 #### Results:
 
-  - The longest runtime is under 30 minutes, so runtime isn’t a large
-    consideration if we are making a choice about sample size.  
+  - The longest runtime is under 30 minutes, so runtime isn’t as large
+    of a consideration if we are only comparing a few algorithms.  
   - There isn’t much difference in runtime between n = 100 and n =
     2000.  
   - For n = 100, there’s a relatively large change in percent error when
