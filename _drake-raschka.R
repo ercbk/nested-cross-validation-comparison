@@ -16,7 +16,8 @@ source("performance-experiment/functions/inner-tune.R")
 source("performance-experiment/functions/outer-cv.R")
 source("performance-experiment/functions/ncv-compare.R")
 source("performance-experiment/functions/run-ncv.R")
-source("performance-experiment/Kuhn-Johnson/plan-kj.R")
+source("performance-experiment/Raschka/plan-raschka.R")
+
 
 
 
@@ -48,20 +49,22 @@ cl <- future::makeClusterPSOCK(
       
       rscript_args = c("-e", shQuote(".libPaths('/home/rstudio/R/x86_64-pc-linux-gnu-library/3.6')")
       ), 
-      verbose = TRUE,
-      timeout = 2592000*100
+      verbose = TRUE
 )
 
 
 future::plan(list(tweak(cluster, workers = cl), multiprocess))
 
 
+cache_raschka <- drake_cache(path = ".drake-raschka")
 
 # verbose = 0 prints nothing, verbose = 1 prints message as each target completes; verbose = 2 adds a progress bar that tracks target completion
 drake_config(
       plan,
       verbose = 1,
       lock_envir = FALSE,
-      jobs_preprocess = 7
+      jobs_preprocess = 7,
+      cache = cache_raschka
 )
+
 

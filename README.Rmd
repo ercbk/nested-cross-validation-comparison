@@ -9,20 +9,29 @@ output: github_document
 
 Nested cross-validation has become a recommended technique for situations in which the size of our dataset is insufficient to simultaneously handle hyperparameter tuning and algorithm comparison. Examples of such situations include: proof of concept, start-ups, medical studies, time series, etc. Using standard methods such as k-fold cross-validation in these cases may result in substantial increases in optimization bias. Nested cross-validation has been shown to produce less biased, out-of-sample error estimates even using datasets with only hundreds of rows and therefore gives a better judgement of generalization performance.  
 
-The primary issue with this technique is that it is computationally very expensive with potentially tens of 1000s of models being trained during the process. While researching this technique, I found two slightly different methods of performing nested cross-validation — one authored by [Sabastian Raschka](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_eval4-algo/code/11-eval4-algo__nested-cv_verbose1.ipynb) and the other by [Max Kuhn and Kjell Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).  
+The primary issue with this technique is that it can be computationally expensive with potentially tens of 1000s of models being trained during the process. While researching this technique, I found two slightly different variations of performing nested cross-validation — one authored by [Sabastian Raschka](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_eval4-algo/code/11-eval4-algo__nested-cv_verbose1.ipynb) and the other by [Max Kuhn and Kjell Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).  
+
+Various elements of the technique affect the run times and can be altered to improve performance. These include:  
+
+1. Hyperparameter value grids  
+2. Grid search strategy  
+3. Inner-Loop CV strategy  
+4. Outer-Loop CV strategy  
+
 I'll be examining two aspects of nested cross-validation:  
 
 1. Duration: Find out which packages and combinations of model functions give us the fastest implementation of each method.  
-2. Performance: First, develop a testing framework. Then, using a generated dataset, calculate how many repeats, given the sample size, should we expect to need in order to obtain a reasonably accurate out-of-sample error estimate.  
+2. Performance: First, develop a testing framework. Then, for a given data generating process, how large of sample size is needed to obtain reasonably accurate out-of-sample error estimate? And how many repeats in the outer-loop cv strategy should be used to calculate this error estimate?  
 
 
-## Duration Experiment
+## Duration
 #### Experiment details:  
    
    * Random Forest and Elastic Net Regression algorithms  
-   * Both with 100x2 hyperparameter grids  
+   * Both algorithms are tuned with 100x2 hyperparameter grids using a latin hypercube design.  
+   * From {mlbench}, I'm using the generated data set, friedman1, from Friedman's Multivariate Adaptive Regression Splines (MARS) paper.
    * Kuhn-Johnson  
-      + 100 observations  10 features, numeric target variable  
+      + 100 observations: 10 features, numeric target variable  
       + outer loop: 2 repeats, 10 folds  
       + inner loop: 25 bootstrap resamples  
    * Raschka  
@@ -30,17 +39,9 @@ I'll be examining two aspects of nested cross-validation:
       + outer loop: 5 folds  
       + inner loop: 2 folds  
 
-The sizes of the data sets are the same as those in the original scripts by the authors. [MLFlow](https://mlflow.org/docs/latest/index.html) is used to keep track of the duration (seconds) of each run along with the implementation and method used.  
+The sizes of the data sets are the same as those in the original scripts by the authors. Using Kuhn-Johnson, 50,000 models (grid size * number of repeats * number of folds in the outer-loop * number of folds/resamples in the inner-loop) are trained for each algorithm — using Raschka's, 1,001 models for each algorithm. The one extra model in the Raschka variation is due to his method of choosing the hyperparameter values for the final model. He performs an extra k-fold cross-validation using the inner-loop cv strategy on the entire training set. Kuhn-Johnson uses majority vote. Whichever set of hyperparameter values has been chosen during the inner-loop tuning procedure the most often is the set used to fit the final model.  
 
-
-Various elements of the technique can be altered to improve performance. These include:  
-
-1. Hyperparameter value grids  
-2. Outer-Loop CV strategy  
-3. Inner-Loop CV strategy  
-4. Grid search strategy  
-
-These elements also affect the run times. Both methods are using the same size grids, but Kuhn-Johnson uses repeats and more folds in the outer and inner loops while Raschka's trains an extra model over the entire training set at the end at the end. Using Kuhn-Johnson, 50,000 models (grid size * number of repeats * number of folds in the outer-loop * number of folds/resamples in the inner-loop) are trained for each algorithm — using Raschka's, 1,001 models.  
+[MLFlow](https://mlflow.org/docs/latest/index.html) is used to keep track of the duration (seconds) of each run along with the implementation and method used.  
 
 ![](duration-experiment/outputs/0225-results.png)  
 
@@ -104,18 +105,20 @@ durations
 ```
 
 
-## Performance Experiment  
+## Performance 
 
 #### Experiment details:  
 
+  * The same data, algorithms, and hyperparameter grids are used.
   * The fastest implementation of each method is used in running a nested cross-validation with different sizes of data ranging from 100 to 5000 observations and different numbers of repeats of the outer-loop cv strategy.  
       * The {mlr3} implementation is the fastest for Raschka's method, but the Ranger-Kuhn-Johnson implementation is close. To simplify, I am using [Ranger-Kuhn-Johnson](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R) for both methods.  
-  * The chosen algorithm and hyperparameters predicts on a 100K row simulated dataset.  
+  * The chosen algorithm with hyperparameters is fit on the entire training set, and the resulting final model predicts on a 100K row Friedman dataset.  
   * The percent error between the the average mean absolute error (MAE) across the outer-loop folds and the MAE of the predictions on this 100K dataset is calculated for each combination of repeat, data size, and method.  
   * To make this experiment manageable in terms of runtimes, I am using AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge for Random Forest.  
+    + Also see the Other Notes section  
   * Iterating through different numbers of repeats, sample sizes, and methods makes a functional approach more appropriate than running imperative scripts. Also, given the long runtimes and impermanent nature of my internet connection, it would also be nice to cache each iteration as it finishes. The [{drake}](https://github.com/ropensci/drake) package is superb on both counts, so I'm using it to orchestrate.  
 
-```{r perf_build_times, echo=FALSE, message=FALSE}
+```{r perf_build_times_kj, echo=FALSE, message=FALSE}
 
 pacman::p_load(extrafont,dplyr, purrr, lubridate, ggplot2, ggfittext, drake, patchwork)
 bt <- build_times(starts_with("ncv_results"), digits = 4)
@@ -143,7 +146,7 @@ readr::write_csv(subtargets, "performance-experiment/output/perf-exp-output.csv"
 
 ```
 
-```{r perf_bt_charts, echo=FALSE, message=FALSE}
+```{r perf_bt_charts_kj, echo=FALSE, message=FALSE}
 
 fill_colors <- unname(swatches::read_ase("palettes/Forest Floor.ase"))
 
@@ -172,7 +175,7 @@ b <- ggplot(subtargets, aes(y = elapsed, x = repeats,
 
 ```
 
-```{r perf-error-line, echo=FALSE, message=FALSE}
+```{r perf_error_line_kj, echo=FALSE, message=FALSE}
 e <- ggplot(subtargets, aes(x = repeats, y = percent_error, group = n)) +
    geom_point(aes(color = n), size = 3) +
    geom_line(aes(color = n), size = 2) +
@@ -196,7 +199,7 @@ e <- ggplot(subtargets, aes(x = repeats, y = percent_error, group = n)) +
    )
 ```
 
-```{r kj-patch, echo=FALSE, fig.width=12, fig.height=7}
+```{r kj_patch_kj, echo=FALSE, fig.width=12, fig.height=7}
 b + e + plot_layout(guides = "auto") +
    plot_annotation(title = "Kuhn-Johnson") &
    theme(legend.position = "top",
@@ -212,13 +215,121 @@ b + e + plot_layout(guides = "auto") +
 
 #### Results:  
 
-Kuhn-Johnson:  
-
   * Runtimes for n = 100 and n = 800 are close, and there's a large jump in runtime going from n = 2000 to n = 5000.  
   * The number of repeats has little effect on the amount of percent error.
   * For n = 100, there is substantially more variation in percent error than in the other sample sizes.  
   * While there is a large runtime cost that comes with increasing the sample size from 2000 to 5000 obsservations, it doesn't seem to provide any benefit in gaining a more accurate estimate of the out-of-sample error.  
   
+
+```{r perf_build_times_r, echo=FALSE, message=FALSE}
+
+cache_raschka <- drake_cache(path = ".drake-raschka")
+
+bt_r <- build_times(starts_with("ncv_results"),
+                  digits = 4, cache = cache_raschka)
+
+subtarget_bts_r <- bt_r %>% 
+      filter(stringr::str_detect(target, pattern = "[0-9]_([0-9]|[a-z])")) %>% 
+      select(target, elapsed)
+
+subtargets_raw_r <- map_dfr(subtarget_bts_r$target, function(x) {
+      results <- readd(x, character_only = TRUE,
+                       cache = cache_raschka) %>% 
+            mutate(subtarget = x) %>% 
+            select(subtarget, everything())
+      
+}) %>% 
+      inner_join(subtarget_bts_r, by = c("subtarget" = "target"))
+
+subtargets_r <- subtargets_raw_r %>% 
+      mutate(repeats = factor(repeats),
+             n = factor(n),
+             elapsed = round(as.numeric(elapsed)/3600, 2),
+             percent_error = round(delta_error/oos_error, 3))
+
+readr::write_csv(subtargets_r, "performance-experiment/output/perf-exp-output-r.csv")
+# readr::write_rds(subtargets, "performance-experiment/output/perf-exp-output-backup-r.rds")
+
+```
+
+```{r perf_bt_charts_r, echo=FALSE, message=FALSE}
+
+b_r <- ggplot(subtargets_r, aes(y = elapsed, x = repeats,
+                       fill = n, label = elapsed)) +
+   geom_col(position = position_dodge(width = 0.85)) +
+   scale_fill_manual(values = fill_colors[4:7]) +
+   geom_bar_text(position = "dodge", min.size = 9,
+                 place = "right", contrast = TRUE) +
+   coord_flip() +
+   labs(y = "Runtime (hrs)", x = "Repeats",
+        fill = "Sample Size") +
+   theme(title = element_text(family = "Roboto"),
+         text = element_text(family = "Roboto"),
+         legend.position = "top",
+         legend.background = element_rect(fill = "ivory"),
+         legend.key = element_rect(fill = "ivory"),
+         axis.ticks = element_blank(),
+         panel.background = element_rect(fill = "ivory",
+                                         colour = "ivory"),
+         plot.background = element_rect(fill = "ivory"),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank()
+   )
+
+```
+
+```{r perf-error-line_r, echo=FALSE, message=FALSE}
+e_r <- ggplot(subtargets_r, aes(x = repeats, y = percent_error, group = n)) +
+   geom_point(aes(color = n), size = 3) +
+   geom_line(aes(color = n), size = 2) +
+   expand_limits(y = c(0, 0.10)) +
+   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1),
+                      breaks = seq(0,0.125, by=0.025)) +
+   scale_color_manual(values = fill_colors[4:7]) +
+   labs(y = "Percent Error", x = "Repeats",
+        color = "Sample Size") +
+   theme(title = element_text(family = "Roboto"),
+         text = element_text(family = "Roboto"),
+         legend.position = "top",
+         legend.background = element_rect(fill = "ivory"),
+         legend.key = element_rect(fill = "ivory"),
+         axis.ticks = element_blank(),
+         panel.background = element_rect(fill = "ivory",
+                                         color = "ivory"),
+         plot.background = element_rect(fill = "ivory"),
+         panel.border = element_blank(),
+         panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank()
+   )
+```
+
+```{r kj-patch, echo=FALSE, fig.width=12, fig.height=7}
+b_r + e_r + plot_layout(guides = "auto") +
+   plot_annotation(title = "Raschka") &
+   theme(legend.position = "top",
+         legend.text = element_text(size = 12),
+         axis.text.x = element_text(size = 11,
+                                    face = "bold"),
+         axis.text.y = element_text(size = 11,
+                                    face = "bold"),
+         panel.background = element_rect(fill = "ivory",
+                                         color = "ivory"),
+         plot.background = element_rect(fill = "ivory"),)
+```
+
+
+#### Results:  
+
+  * The longest runtime is under 30 minutes, so runtime isn't a large consideration if we are making a choice about sample size.  
+  * There isn't much difference in runtime between n = 100 and n = 2000.  
+  * For n = 100, there's a relatively large change in percent error when going from 1 repeat to 2 repeats. The error estimate then stabilizes for repeats 3 through 5.  
+  * n = 5000 gives poorer out-of-sample error estimates than n = 800 and n = 2000 for all values of repeats.  
+  * n = 800 remains under 2.5% percent error for all repeat values, but also shows considerable volatility.  
+
+
+  
+
 
 
 

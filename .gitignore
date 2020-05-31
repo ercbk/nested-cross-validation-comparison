@@ -4,6 +4,8 @@
 .Ruserdata
 .env
 .drake
+.drake-raschka
+README.html
 ec2-ssh-raw.log
 README_cache
 check-results.R
