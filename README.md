@@ -25,8 +25,8 @@ Raschka](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_e
 and the other by [Max Kuhn and Kjell
 Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).
 
-Various elements of the technique affect the run times and can be
-altered to improve performance. These include:
+Various elements of the technique affect the run times and performance.
+These include:
 
 1.  Hyperparameter value grids  
 2.  Grid search strategy  
