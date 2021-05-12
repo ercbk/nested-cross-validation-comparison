@@ -2,7 +2,8 @@
 # Nested Cross-Validation: Comparing Methods and Implementations
 
 
-![](images/ncv.png)
+![](images/ncv.png)  
+[![DOI](https://zenodo.org/badge/242267104.svg)](https://zenodo.org/badge/latestdoi/242267104)
 
 Nested cross-validation has become a recommended technique for
 situations in which the size of our dataset is insufficient to
