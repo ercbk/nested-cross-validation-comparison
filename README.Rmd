@@ -4,7 +4,7 @@ output: github_document
 
 # Nested Cross-Validation: Comparing Methods and Implementations  
 
-![](images/ncv.png)
+![](images/ncv.png)  
 [![DOI](https://zenodo.org/badge/242267104.svg)](https://zenodo.org/badge/latestdoi/242267104)
 
 Nested cross-validation has become a recommended technique for situations in which the size of our dataset is insufficient to simultaneously handle hyperparameter tuning and algorithm comparison. Examples of such situations include: proof of concept, start-ups, medical studies, time series, etc. Using standard methods such as k-fold cross-validation in these cases may result in substantial increases in optimization bias. Nested cross-validation has been shown to produce less biased, out-of-sample error estimates even using datasets with only hundreds of rows and therefore gives a better judgement of generalization performance.  
