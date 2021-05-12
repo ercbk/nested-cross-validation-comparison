@@ -1,7 +1,6 @@
 
 # Nested Cross-Validation: Comparing Methods and Implementations
 
-### (In-progress)
 
 ![](images/ncv.png)
 
