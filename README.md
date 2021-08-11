@@ -4,9 +4,10 @@
 ![](images/ncv.png)  
 [![DOI](https://zenodo.org/badge/242267104.svg)](https://zenodo.org/badge/latestdoi/242267104)
 
-Experiments conducted in May 2020. Packages had to be updated in August
-2021, but the scripts haven’t been re-ran to make sure everything still
-works.
+Experiments conducted in May 2020. Packages in renv.lock had to be
+updated in August 2021, but all scripts haven’t been re-ran to make sure
+everything still works. So, some refactoring of code may be necessary in
+order to reproduce results.
 
 Nested cross-validation (or double cross-validaation) has become a
 recommended technique for situations in which the size of our dataset is
