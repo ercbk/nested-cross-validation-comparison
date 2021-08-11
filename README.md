@@ -1,11 +1,12 @@
 
 # Nested Cross-Validation: Comparing Methods and Implementations
 
-
 ![](images/ncv.png)  
 [![DOI](https://zenodo.org/badge/242267104.svg)](https://zenodo.org/badge/latestdoi/242267104)
 
-Experiments conducted in May 2020
+Experiments conducted in May 2020. Packages had to be updated in August
+2021, but the scripts haven’t been re-ran to make sure everything still
+works.
 
 Nested cross-validation has become a recommended technique for
 situations in which the size of our dataset is insufficient to
@@ -191,7 +192,7 @@ implementation and method used.
     a similar amount of generalization error if your data size is a few
     thousand rows
     -   Kuhn-Johnson’s runtime starts to really balloon once you get
-        into dataset with over a thousand rows.  
+        into datasets with over a thousand rows.  
     -   The extra folds made a huge difference. With Kuhn-Johnson, the
         runtimes were hours, and with Raschka’s, it was minutes.  
 -   For smaller datasets, you should have at least 3 repeats when
