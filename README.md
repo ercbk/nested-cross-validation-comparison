@@ -186,7 +186,7 @@ implementation and method used.
 -   n = 800 remains under 2.5% percent error for all repeat values, but
     also shows considerable volatility.
 
-## Summary
+## Discussion
 
 -   Kuhn-Johnson trains 50x as many models; takes 8x longer to run; for
     a similar amount of generalization error if your data size is a few
