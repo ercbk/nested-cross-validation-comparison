@@ -8,22 +8,23 @@ Experiments conducted in May 2020. Packages had to be updated in August
 2021, but the scripts haven’t been re-ran to make sure everything still
 works.
 
-Nested cross-validation has become a recommended technique for
-situations in which the size of our dataset is insufficient to
-simultaneously handle hyperparameter tuning and algorithm comparison.
-Using standard methods such as k-fold cross-validation in these cases
-may result in substantial increases in optimization bias where the more
-models that are trained on a fold means there’s a greater opportunity
-for a model to achieve a low score by chance. Nested cross-validation
-has been shown to produce less biased, out-of-sample error estimates
-even using datasets with only hundreds of rows and therefore gives a
-better estimation of generalized performance.
-
+Nested cross-validation (or double cross-validaation) has become a
+recommended technique for situations in which the size of our dataset is
+insufficient to simultaneously handle hyperparameter tuning and
+algorithm comparison. Using standard methods such as k-fold
+cross-validation in these cases may result in substantial increases in
+optimization bias where the more models that are trained on a fold means
+there’s a greater opportunity for a model to achieve a low score by
+chance. Nested cross-validation has been shown to produce less biased,
+out-of-sample error estimates even using datasets with only hundreds of
+rows and therefore gives a better estimation of generalized performance.
 The primary issue with this technique is that it is usually
 computationally expensive with potentially tens of 1000s of models being
-trained during the process. While researching this technique, I found
-two slightly different variations of performing nested cross-validation
-— one authored by [Sabastian
+trained during the process.
+
+While researching this technique, I found two slightly different
+variations of performing nested cross-validation — one authored by
+[Sabastian
 Raschka](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_eval4-algo/code/11-eval4-algo__nested-cv_verbose1.ipynb)
 and the other by [Max Kuhn and Kjell
 Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).
@@ -34,7 +35,9 @@ Therefore, the hyperparameter tuning that takes place in the inner-loop
 during nested cross-validation is only in service of algorithm
 selection. Kuhn-Johnson uses majority vote. Whichever set of
 hyperparameter values has been chosen during the inner-loop tuning
-procedure the most often is the set used to fit the final model.
+procedure the most often is the set used to fit the final model. The
+other diffferences are just the number of folds/resamples used in the
+outer and inner loops which are essentially just tuning parameters.
 
 Various elements of the technique affect the run times and performance.
 These include:
@@ -146,7 +149,7 @@ implementation and method used.
 -   To make this experiment manageable in terms of runtimes, I am using
     AWS instances: a r5.2xlarge for the Elastic Net and a r5.24xlarge
     for Random Forest.
-    -   Also see the Other Notes section  
+    -   Also see the Discussion section  
 -   Iterating through different numbers of repeats, sample sizes, and
     methods makes a functional approach more appropriate than running
     imperative scripts. Also, given the long runtimes and impermanent
@@ -188,18 +191,47 @@ implementation and method used.
 
 ## Discussion
 
--   Kuhn-Johnson trains 50x as many models; takes 8x longer to run; for
-    a similar amount of generalization error if your data size is a few
-    thousand rows
+-   The performance experimental framework used here could be useful as
+    a way to gain insight into the amounts and types of resources that a
+    project’s first steps might require. For example, testing simiulated
+    data before collection of actual data begins.  
+-   The elasticnet model was slower to train than the random forest for
+    the 100 row dataset. Compute resources should be optimized for each
+    algorithm. For example, the number of vCPUs capable of being
+    utilized by a random forest algorithm is much higher than number for
+    an elasticnet algorithm. The elasticnet only used the number of
+    vCPUs that matched the number of training folds while the random
+    forest used all available vCPUs. Using a sparse matrix or another
+    package (e.g. biglasso) might help to lower training times for
+    elasticnet.
+-   Adjusting the inner-loop strategy seems to have the most effect on
+    the volatility of the results.  
+-   For data sizes of a few thousand rows, Kuhn-Johnson trains 50x as
+    many models; takes 8x longer to run; for a similar amount of
+    generalization error as compared to the Raschka method. The similar
+    results in generalization error might be specific to this dataset
+    though.
     -   Kuhn-Johnson’s runtime starts to really balloon once you get
         into datasets with over a thousand rows.  
-    -   The extra folds made a huge difference. With Kuhn-Johnson, the
-        runtimes were hours, and with Raschka’s, it was minutes.  
+    -   The extra folds in the outer loop made a huge difference. With
+        Kuhn-Johnson, the runtimes were hours, and with Raschka’s, it
+        was minutes.  
 -   For smaller datasets, you should have at least 3 repeats when
     running Rashka’s method.  
 -   This is just one dataset, but I still found it surprising how little
     a difference repeats made in reducing generalizaion error. The
     benefit only kicked in with the dataset that had hundred rows.
+
+## Next Steps
+
+-   Raschka’s method using the majority vote method from Kuhn-Johnson
+    for the final hyperparameter settings might be an additional
+    optimization step. If the final k-fold cv can be discarded without
+    much loss in generalization error, then maybe training times can be
+    shortened further.  
+-   There should be a version of this technique that’s capable of
+    working for time series. I have ideas, so it might be something I’ll
+    work on for a future project.
 
 ## References
 
