@@ -3,9 +3,9 @@ output: github_document
 ---
 
 # Nested Cross-Validation: Comparing Methods and Implementations  
-### (In-progress)
 
-![](images/ncv.png)
+![](images/ncv.png)  
+[![DOI](https://zenodo.org/badge/242267104.svg)](https://zenodo.org/badge/latestdoi/242267104)
 
 Experiments conducted in May 2020  
 
