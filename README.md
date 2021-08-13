@@ -242,6 +242,9 @@ implementation and method used.
     optimization step. If the final k-fold cv can be discarded without
     much loss in generalization error, then maybe training times can be
     shortened further.  
+-   There’s probably room to increase the number of folds in the
+    inner-loop of Raschka’s method in order to gain more stable results
+    while keeping the training time comparitively low.  
 -   There should be a version of this technique that’s capable of
     working for time series. I have ideas, so it might be something I’ll
     work on for a future project.
