@@ -29,7 +29,7 @@ The results from these experiments should give us an idea about which methodolog
 
 
 ## Recommendations:  
-   * For faster training times, use {mlr3} or other R model packages outside of the {tidymodels} ecosystem and code the nested cross-validation loops manually (Code: [mlr3](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/raschka/nested-cv-mlr3-raschka.R), [ranger-kj](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R), [Kuhn-Johnson](https://www.tidymodels.org/learn/work/nested-resampling/)).  
+   * For faster training times, use {mlr3} (caveat: see Discussion) or other R model packages outside of the {tidymodels} ecosystem and code the nested cross-validation loops manually (Code: [mlr3](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/raschka/nested-cv-mlr3-raschka.R), [ranger-kj](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R), [Kuhn-Johnson](https://www.tidymodels.org/learn/work/nested-resampling/)).  
    * Choose compute resources with large amounts of RAM instead of opting for powerful processors. From the AWS cpu product line, I found the r5.#xlarge instances ran fastest. The most efficient number of vCPUs may vary according to the algorithm.  
    * For the data in this experiment with row numbers in the low thousands, Raschka's method performed just as well as Kuhn-Johnson's but was substantially faster.  
    * For the data in this experiment with row numbers in the hundreds, Raschka's method with at least 3 repeats performed just as well as Kuhn-Johnson's but was still substantially faster even with the repeats.  
@@ -339,6 +339,7 @@ b_r + e_r + plot_layout(guides = "auto") +
 
 ## Discussion    
    * The performance experimental framework used here could be useful as a way to gain insight into the amounts and types of resources that a project's first steps might require. For example, testing simiulated data before collection of actual data begins.  
+   * {mlr3} wasn't included in the Kuhn-Johnson section of the duration experiment, because with the extra folds/resamples, the RAM usage rapidly increases to the maximum and either locks-up or slows the training time tremendously. I haven't explored this further.  
    * The elasticnet model was slower to train than the random forest for the 100 row dataset. Compute resources should be optimized for each algorithm. For example, the number of vCPUs capable of being utilized by a random forest algorithm is much higher than number for an elasticnet algorithm. The elasticnet only used the number of vCPUs that matched the number of training folds while the random forest used all available vCPUs. Using a sparse matrix or another package (e.g. biglasso) might help to lower training times for elasticnet. 
    * Adjusting the inner-loop strategy seems to have the most effect on the volatility of the results.  
    * For data sizes of a few thousand rows, Kuhn-Johnson trains 50x as many models; takes 8x longer to run; for a similar amount of generalization error as compared to the Raschka method. The similar results in generalization error might be specific to this dataset though.    

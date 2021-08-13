@@ -65,9 +65,9 @@ lower training times, lower costs, and lower generalization error.
 
 ## Recommendations:
 
--   For faster training times, use {mlr3} or other R model packages
-    outside of the {tidymodels} ecosystem and code the nested
-    cross-validation loops manually (Code:
+-   For faster training times, use {mlr3} (caveat: see Discussion) or
+    other R model packages outside of the {tidymodels} ecosystem and
+    code the nested cross-validation loops manually (Code:
     [mlr3](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/raschka/nested-cv-mlr3-raschka.R),
     [ranger-kj](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R),
     [Kuhn-Johnson](https://www.tidymodels.org/learn/work/nested-resampling/)).  
@@ -204,6 +204,10 @@ implementation and method used.
     a way to gain insight into the amounts and types of resources that a
     project’s first steps might require. For example, testing simiulated
     data before collection of actual data begins.  
+-   {mlr3} wasn’t included in the Kuhn-Johnson section of the duration
+    experiment, because with the extra folds/resamples, the RAM usage
+    rapidly increases to the maximum and either locks-up or slows the
+    training time tremendously. I haven’t explored this further.  
 -   The elasticnet model was slower to train than the random forest for
     the 100 row dataset. Compute resources should be optimized for each
     algorithm. For example, the number of vCPUs capable of being
