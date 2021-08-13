@@ -200,10 +200,6 @@ implementation and method used.
 
 ## Discussion
 
--   The performance experimental framework used here could be useful as
-    a way to gain insight into the amounts and types of resources that a
-    project’s first steps might require. For example, testing simiulated
-    data before collection of actual data begins.  
 -   {mlr3} wasn’t included in the Kuhn-Johnson section of the duration
     experiment, because with the extra folds/resamples, the RAM usage
     rapidly increases to the maximum and either locks-up or slows the
@@ -237,14 +233,21 @@ implementation and method used.
 
 ## Next Steps
 
--   Raschka’s method using the majority vote method from Kuhn-Johnson
-    for the final hyperparameter settings might be an additional
-    optimization step. If the final k-fold cv can be discarded without
-    much loss in generalization error, then maybe training times can be
-    shortened further.  
--   There’s probably room to increase the number of folds in the
-    inner-loop of Raschka’s method in order to gain more stable results
-    while keeping the training time comparitively low.  
+-   The performance experimental framework used here could be useful as
+    a way to gain insight into the amounts and types of resources that a
+    project’s first steps might require. For example, testing simiulated
+    data before collection of actual data begins. I might try to see if
+    there’s much difficulty extending it to {mlr3} (assuming I can
+    figure out the RAM issue) and Python.  
+-   Experiment with Raschka’s method more.
+    -   Raschka’s method using the majority vote method from
+        Kuhn-Johnson for the final hyperparameter settings might be an
+        additional optimization step. If the final k-fold cv can be
+        discarded without much loss in generalization error, then maybe
+        training times can be shortened further.  
+    -   There’s probably room to increase the number of folds in the
+        inner-loop of Raschka’s method in order to gain more stable
+        results while keeping the training time comparitively low.  
 -   There should be a version of this technique that’s capable of
     working for time series. I have ideas, so it might be something I’ll
     work on for a future project.

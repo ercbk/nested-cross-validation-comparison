@@ -338,7 +338,6 @@ b_r + e_r + plot_layout(guides = "auto") +
 
 
 ## Discussion    
-   * The performance experimental framework used here could be useful as a way to gain insight into the amounts and types of resources that a project's first steps might require. For example, testing simiulated data before collection of actual data begins.  
    * {mlr3} wasn't included in the Kuhn-Johnson section of the duration experiment, because with the extra folds/resamples, the RAM usage rapidly increases to the maximum and either locks-up or slows the training time tremendously. I haven't explored this further.  
    * The elasticnet model was slower to train than the random forest for the 100 row dataset. Compute resources should be optimized for each algorithm. For example, the number of vCPUs capable of being utilized by a random forest algorithm is much higher than number for an elasticnet algorithm. The elasticnet only used the number of vCPUs that matched the number of training folds while the random forest used all available vCPUs. Using a sparse matrix or another package (e.g. biglasso) might help to lower training times for elasticnet. 
    * Adjusting the inner-loop strategy seems to have the most effect on the volatility of the results.  
@@ -350,8 +349,10 @@ b_r + e_r + plot_layout(guides = "auto") +
 
 
 ## Next Steps  
-   * Raschka's method using the majority vote method from Kuhn-Johnson for the final hyperparameter settings might be an additional optimization step. If the final k-fold cv can be discarded without much loss in generalization error, then maybe training times can be shortened further.  
-   * There's probably room to increase the number of folds in the inner-loop of Raschka's method in order to gain more stable results while keeping the training time comparitively low.   
+   * The performance experimental framework used here could be useful as a way to gain insight into the amounts and types of resources that a project's first steps might require. For example, testing simiulated data before collection of actual data begins. I might try to see if there's much difficulty extending it to {mlr3} (assuming I can figure out the RAM issue) and Python.  
+   * Experiment with Raschka's method more.
+      + Raschka's method using the majority vote method from Kuhn-Johnson for the final hyperparameter settings might be an additional optimization step. If the final k-fold cv can be discarded without much loss in generalization error, then maybe training times can be shortened further.  
+      + There's probably room to increase the number of folds in the inner-loop of Raschka's method in order to gain more stable results while keeping the training time comparitively low.   
    * There should be a version of this technique that's capable of working for time series. I have ideas, so it might be something I'll work on for a future project.  
 
 
