@@ -28,7 +28,7 @@ variations of performing nested cross-validation — one authored by
 [Sabastian
 Raschka](https://github.com/rasbt/stat479-machine-learning-fs19/blob/master/11_eval4-algo/code/11-eval4-algo__nested-cv_verbose1.ipynb)
 and the other by [Max Kuhn and Kjell
-Johnson](https://tidymodels.github.io/rsample/articles/Applications/Nested_Resampling.html).
+Johnson](https://www.tidymodels.org/learn/work/nested-resampling/).
 After the nested cross-validation procedure and an algorithm is chosen,
 Raschka performs an extra k-fold cross-validation using the inner-loop
 cv strategy on the entire training set in order to tune his final model.
@@ -64,16 +64,23 @@ lower training times, lower costs, and lower generalization error.
 
 ## Recommendations:
 
--   Use {mlr3} or other R model packages outside of the {tidymodels}
-    ecosystem and code the nested cross-validation loops manually.  
--   For data sizes in the low thousands, Raschka’s method performs just
-    as well as Kuhn-Johnson’s but is substantially faster.  
--   For data sizes in the hundreds, Raschka’s method with at least 3
-    repeats performs just as well as Kuhn-Johnson’s but is still
-    substantially faster even with the repeats.  
+-   For faster training times, use {mlr3} or other R model packages
+    outside of the {tidymodels} ecosystem and code the nested
+    cross-validation loops manually (Code:
+    [mlr3](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/raschka/nested-cv-mlr3-raschka.R),
+    [ranger-kj](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R),
+    [Kuhn-Johnson](https://www.tidymodels.org/learn/work/nested-resampling/)).  
 -   Choose compute resources with large amounts of RAM instead of opting
     for powerful processors. From the AWS cpu product line, I found the
-    r5.\#xlarge instances ran fastest.
+    r5.\#xlarge instances ran fastest. The most efficient number of
+    vCPUs may vary according to the algorithm.  
+-   For the data in this experiment with row numbers in the low
+    thousands, Raschka’s method performed just as well as Kuhn-Johnson’s
+    but was substantially faster.  
+-   For the data in this experiment with row numbers in the hundreds,
+    Raschka’s method with at least 3 repeats performed just as well as
+    Kuhn-Johnson’s but was still substantially faster even with the
+    repeats.
 
 ## Duration
 
