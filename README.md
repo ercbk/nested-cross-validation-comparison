@@ -71,6 +71,7 @@ lower training times, lower costs, and lower generalization error.
     [mlr3](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/raschka/nested-cv-mlr3-raschka.R),
     [ranger-kj](https://github.com/ercbk/nested-cross-validation-comparison/blob/master/duration-experiment/kuhn-johnson/nested-cv-ranger-kj.R),
     [Kuhn-Johnson](https://www.tidymodels.org/learn/work/nested-resampling/)).  
+    -   2022-11-11 {parsnip} has undergone changes potentially leading to a 3-fold speed-up ([link](https://parsnip.tidymodels.org/news/index.html#parsnip-103))
 -   Choose compute resources with large amounts of RAM instead of opting
     for powerful processors. From the AWS cpu product line, I found the
     r5.\#xlarge instances ran fastest. The most efficient number of
@@ -133,6 +134,7 @@ implementation and method used.
     larger, I think {h2o} would be more competitive.  
 -   The {tidymodels} packages, {parsnip} and {tune}, add substantial
     overhead.
+    -   2022-11-11 {parsnip} has undergone changes potentially leading to a 3-fold speed-up ([link](https://parsnip.tidymodels.org/news/index.html#parsnip-103))
 
 ## Performance
 
