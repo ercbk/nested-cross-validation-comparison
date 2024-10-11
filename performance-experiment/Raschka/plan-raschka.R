@@ -1,4 +1,4 @@
-# Kuhn-Johnson drake plan
+# Raschka drake plan
 
 
 # Notes:
