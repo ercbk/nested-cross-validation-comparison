@@ -1,8 +1,8 @@
-# drake make file for Kuhn-Johnson performance experiment
+# drake make file for Raschka performance experiment
 
 
 # Notes:
-# 1. see plan-kj.R for more details on how this thing works
+# 1. see plan-raschka.R for more details on how this thing works
 # 2. link to {future} issue with instructions on special PuTTY settings, https://github.com/HenrikBengtsson/future/issues/370
 
 
